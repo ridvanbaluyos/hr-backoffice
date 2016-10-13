@@ -19,51 +19,49 @@
     <!-- /.row -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
+            @if (Session::has('alert-message'))
+                <div class="alert alert-{{ Session::get('alert-class') }}">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    {{ Session::get('alert-message') }}
+                </div>
+            @endif
             <a class="btn btn-primary" id="" href="/settings/teams/add">Add Team</a>
         </div>
     </div>
     <br/>
     <div class="row">
         <div class="col-lg-6">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="">
-                        <td>1</td>
-                        <td>Web Developers</td>
-                        <td>Engineering</td>
-                        <td>
-                            <a href="/settings/teams/edit/1"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td>2</td>
-                        <td>Mobile Developers</td>
-                        <td>Engineering</td>
-                        <td>
-                            <a href="/settings/teams/edit/2"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td>3</td>
-                        <td>QA Engineers</td>
-                        <td>Engineering</td>
-                        <td>
-                            <a href="/settings/teams/edit/3"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            @if ($data['teams']->isEmpty())
+                <div class="well">
+                    No teams yet. Would you like to <a href="/settings/teams/add"> add one</a>?
+                </div>
+            @else
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($data['teams'] as $team)
+                            <tr class="">
+                                <td>{{ $team['id'] }}</td>
+                                <td>{{ $team['name'] }}</td>
+                                <td>{{ $data['departments'][$team['department_id']]['name'] }}</td>
+                                <td>
+                                    <a href="/settings/teams/edit/{{ $team['id'] }}"><i class="fa fa-wrench" aria-hidden="true"></i> Configure</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
     <!-- /.row -->

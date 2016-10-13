@@ -25,6 +25,8 @@ Route::get('/leaves/apply', 'LeavesController@getApply');
 Route::get('/settings/teams', 'Settings\TeamsController@getIndex');
 Route::get('/settings/teams/add', 'Settings\TeamsController@getAdd');
 Route::post('/settings/teams/add', 'Settings\TeamsController@postAdd');
+Route::get('/settings/teams/edit/{id}', 'Settings\TeamsController@getEdit');
+Route::post('/settings/teams/edit/{id}', 'Settings\TeamsController@postEdit');
 
 Route::get('/settings/departments', 'Settings\DepartmentsController@getIndex');
 Route::get('/settings/departments/add', 'Settings\DepartmentsController@getAdd');

@@ -71,6 +71,10 @@
             minDate: new Date(),
             useCurrent: true,
         });
+
+        $('#logout').click(function () {
+
+        });
     });
 </script>
 </body>

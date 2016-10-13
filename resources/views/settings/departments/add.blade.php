@@ -32,12 +32,13 @@
         @else
             <form name="addDepartmentForm" method="POST" action="{{ url('/settings/departments/add') }}">
         @endif
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="form-group">
-                <label for="departmentName">What is the name of the department?</label>
-                <input type="text" class="form-control" id="departmentName" placeholder="Department Name" name="department_name" value="@if (isset($data['department'])){{ $data['department']['name'] }}@endif"">
-            </div>
-            <button type="submit" class="btn btn-primary">@if (isset($data['department']))Update @else Add @endif Department</button>
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="departmentName">What is the name of the department?</label>
+            <input type="text" class="form-control" id="departmentName" placeholder="Department Name" name="department_name" value="@if (isset($data['department'])){{ $data['department']['name'] }}@endif">
+        </div>
+        <button type="submit" class="btn btn-primary">@if (isset($data['department']))Update @else Add @endif Department</button>
+            <a href="/settings/departments" class="btn btn-link">Cancel</a>
         </form>
     </div>
 </div>

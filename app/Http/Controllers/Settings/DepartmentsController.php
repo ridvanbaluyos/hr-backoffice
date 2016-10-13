@@ -51,13 +51,12 @@ class DepartmentsController extends Controller
     {
         $name = $request->input('department_name');
         $createdBy = Auth::user()->email;
-        $data = [];
 
         try {
             $departmentModel = new Department;
             $departmentModel->name = $name;
             $departmentModel->created_by = $createdBy;
-            $result = $departmentModel->save();
+            $departmentModel->save();
 
             $request->session()->flash('alert-class', 'success');
             $request->session()->flash('alert-message', $name . ' Department has been successfully added!');

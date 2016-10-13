@@ -90,22 +90,25 @@
         </ul>
     </li>
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ Auth::user()->name }} <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-            </li>
-        </ul>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ Auth::user()->name }} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="/user/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+                </li>
+                <li>
+                    <a href="/user/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                </li>
+                <li>
+                    <a href="/user/settings"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <form name="logout" method="POST" action="/logout">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-link" style="color: #333;padding: 3px 20px;"><i class="fa fa-fw fa-power-off"></i> Logout</button>
+                    </form>
+                </li>
+            </ul>
     </li>
     @endif
 </ul>

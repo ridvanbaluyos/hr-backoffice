@@ -49,8 +49,8 @@
                         <td>18 November 2016</td>
                         <td>11 October 2016</td>
                         <td>
-                            <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a> |
-                            <a href="#"><i class="fa fa-times" aria-hidden="true" style="color:red"></i> Cancel</a>
+                            <a href="#"><i class="fa fa-undo" aria-hidden="true" style="color:red"></i> Retract</a> |
+                            <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
                         </td>
                     </tr>
                     <tr class="success">

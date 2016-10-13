@@ -1,32 +1,68 @@
 @if (Auth::check())
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
-        <li class="active">
+        <li class="">
             <a href="/home"><i class="fa fa-fw fa-home"></i> Home</a>
         </li>
         <li class="">
             <a href="/teams/status/1"><i class="fa fa-fw fa-users"></i> Team Status</a>
         </li>
         <li class="">
-            <a href="/leaves"><i class="fa fa-fw fa-plane"></i> Leave Records</a>
+            <a href="/time"><i class="fa fa-fw fa-clock-o"></i> Time Records</a>
         </li>
         <li class="">
-            <a href="/overtimes"><i class="fa fa-fw fa-clock-o"></i> Overtime Records</a>
+            <a href="/overtimes"><i class="fa fa-history" aria-hidden="true"></i> Overtime Records</a>
+        </li>
+        <li class="">
+            <a href="/leaves"><i class="fa fa-fw fa-plane"></i> Leave Records</a>
         </li>
         <li class="">
             <a href="/approvals"><i class="fa fa-thumbs-o-up"></i> Approvals</a>
         </li>
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#demo" class="collapsed" aria-expanded="false"><i class="fa fa-user"></i> HR <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="demo" class="collapse" aria-expanded="false">
+            <a href="javascript:;" data-toggle="collapse" data-target="#employee_settings" class="collapsed" aria-expanded="false"><i class="fa fa-cog" aria-hidden="true"></i> Employee Settings <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="employee_settings" class="collapse" aria-expanded="false">
                 <li>
-                    <a href="#">Time Attendance Report</a>
+                    <a href="/settings/employees">Employees</a>
                 </li>
                 <li>
-                    <a href="#">Employee Settings</a>
+                    <a href="/settings/teams">Teams</a>
                 </li>
                 <li>
-                    <a href="#">Company Settings</a>
+                    <a href="/settings/employee-schedules">Employee Schedules</a>
+                </li>
+                <li>
+                    <a href="/settings/emplooyee-leave-credits">Employee Leave Credits</a>
+                </li>
+                <li>
+                    <a href="/settings/employee-time-logs">Time Logs</a>
+                </li>
+
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#company_settings" class="collapsed" aria-expanded="false"><i class="fa fa-cogs" aria-hidden="true"></i> Company Settings <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="company_settings" class="collapse" aria-expanded="false">
+                <li>
+                    <a href="/settings/holidays"> Holidays</a>
+                </li>
+                <li>
+                    <a href="/settings/leave-templates">Leave Templates</a>
+                </li>
+                <li>
+                    <a href="/settings/ip-lockdown">IP Lockdown</a>
+                </li>
+                <li>
+                    <a href="/announcements">Announcements</a>
+                </li>
+                <li>
+                    <a href="/settings/departments">Departments</a>
+                </li>
+                <li>
+                    <a href="/settings/site">Site</a>
+                </li>
+                <li>
+                    <a href="/settings/configuration">Configuration</a>
                 </li>
             </ul>
         </li>

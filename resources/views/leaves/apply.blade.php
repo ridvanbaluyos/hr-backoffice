@@ -14,7 +14,7 @@
                 <i class="fa fa-plane"></i> <a href="/leaves"> Leaves</a>
             </li>
             <li class="active">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i> Apply
+                Apply
             </li>
         </ol>
     </div>

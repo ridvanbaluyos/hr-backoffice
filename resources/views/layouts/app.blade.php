@@ -67,7 +67,9 @@
 <script type="text/javascript">
     $(function () {
         $('#apply_leave_startdate').datetimepicker({
-            
+            format: 'MM/DD/YYYY',
+            minDate: new Date(),
+            useCurrent: true,
         });
     });
 </script>

@@ -20,3 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 Route::get('/leaves', 'LeavesController@getIndex');
 Route::get('/leaves/apply', 'LeavesController@getApply');
+
+// Settings
+Route::get('/settings/teams', 'Settings\TeamsController@getIndex');
+Route::get('/settings/teams/add', 'Settings\TeamsController@getAdd');
+Route::post('/settings/teams/add', 'Settings\TeamsController@postAdd');
+
+Route::get('/settings/departments', 'Settings\DepartmentsController@getIndex');
+Route::get('/settings/departments/add', 'Settings\DepartmentsController@getAdd');
+Route::post('/settings/departments/add', 'Settings\DepartmentsController@postAdd');
+Route::get('/settings/departments/edit/{id}', 'Settings\DepartmentsController@getEdit');
+Route::post('/settings/departments/edit/{id}', 'Settings\DepartmentsController@postEdit');

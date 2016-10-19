@@ -51,7 +51,11 @@
                         @endforeach
                     </select>
                 </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-lg-12">
                 @if (isset($data['team']))
                     <label for="team_managers">Managers</label> <a href="#" class="btn btn-success btn-xs">Add Manager</a>
                     <div class="table-responsive" id="team_managers">

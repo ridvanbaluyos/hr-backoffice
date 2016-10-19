@@ -33,3 +33,6 @@ Route::get('/settings/departments/add', 'Settings\DepartmentsController@getAdd')
 Route::post('/settings/departments/add', 'Settings\DepartmentsController@postAdd');
 Route::get('/settings/departments/edit/{id}', 'Settings\DepartmentsController@getEdit');
 Route::post('/settings/departments/edit/{id}', 'Settings\DepartmentsController@postEdit');
+
+Route::get('/settings/employees', 'Settings\EmployeesController@getIndex');
+Route::get('/settings/employees/add', 'Settings\EmployeesController@getAdd');

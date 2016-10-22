@@ -47,7 +47,6 @@
                             @else
                                 <option value="{{ $department['id'] }}">{{ $department['name'] }}</option>
                             @endif
-
                         @endforeach
                     </select>
                 </div>

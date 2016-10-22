@@ -66,7 +66,7 @@
 <!-- Datetime Picker JS -->
 <script type="text/javascript">
     $(function () {
-        $('#apply_leave_startdate').datetimepicker({
+        $('#apply_leave_startdate, #employee_date_hired, #employee_date_regularized, #employee_birthday').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(),
             useCurrent: true,

@@ -14,12 +14,14 @@ class CreateDepartmentsTable extends Migration
     public function up()
     {
         //
-        Schema::create('departments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 32)->unique();
-            $table->string('created_by', 32);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('departments')) {
+            Schema::create('departments', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name', 32)->unique();
+                $table->string('created_by', 32);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

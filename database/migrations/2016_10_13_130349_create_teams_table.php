@@ -14,15 +14,17 @@ class CreateTeamsTable extends Migration
     public function up()
     {
         //
-        Schema::create('teams', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 32);
-            $table->integer('department_id');
-            $table->string('created_by', 32);
-            $table->timestamps();
-            $table->index(['name', 'department_id'], 'name_department');
-            $table->unique(['name', 'department_id']);
-        });
+        if (!Schema::hasTable('teams')) {
+            Schema::create('teams', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name', 32);
+                $table->integer('department_id');
+                $table->string('created_by', 32);
+                $table->timestamps();
+                $table->index(['name', 'department_id'], 'name_department');
+                $table->unique(['name', 'department_id']);
+            });
+        }
     }
 
     /**

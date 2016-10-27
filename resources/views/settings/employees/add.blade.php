@@ -14,10 +14,10 @@
                 <i class="fa fa-cogs"></i> <a href="/settings/employees"> Settings</a>
             </li>
             <li class="">
-                <a href="/settings/employees"> Teams</a>
+                <a href="/settings/employees"> Employees</a>
             </li>
             <li class="active">
-                @if (isset($data['team']))
+                @if (isset($data['employee']))
                     Edit
                 @else
                     Add
@@ -29,12 +29,11 @@
 <!-- /.row -->
 
 <div class="row">
-    @if (isset($data['team']))
-        <form name="teamNameForm" method="POST" action="{{ url('/settings/employees/edit/' . $data['team']['id']) }}">
+    @if (isset($data['employee']))
+        {{ Form::open(['url' => '/settings/employees/edit/' . $data['employee']['id'], 'method' => 'post', 'name' => 'employeeForm']) }}
     @else
-        <form name="teamNameForm" method="POST" action="{{ url('/settings/employees/add') }}">
+        {{ Form::open(['url' => '/settings/employees/add', 'method' => 'post', 'name' => 'employeeForm']) }}
     @endif
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -44,43 +43,37 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="employee_id">Employee ID</label>
-                                    <input class="form-control" name="employee_id" id="employee_id" />
+                                    {{ Form::label('employee_number', 'Employee Number') }}
+                                    @if (isset($data['employee']))
+                                        {{ Form::text('employee_number', (isset($data['employee'])) ? $data['employee']['employee_number'] : '', ['class' => 'form-control', 'id' => 'employee_number', 'readonly' => 'readonly']) }}
+                                    @else
+                                        {{ Form::text('employee_number', (isset($data['employee'])) ? $data['employee']['employee_number'] : '', ['class' => 'form-control', 'id' => 'employee_number']) }}
+                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_firstname">First Name</label>
-                                    <input class="form-control" name="employee_firstname" id="employee_firstname" />
+                                    {{ Form::label('employee_firstname', 'First Name') }}
+                                    {{ Form::text('employee_firstname', (isset($data['employee'])) ? $data['employee']['first_name'] : '', ['class' => 'form-control', 'id' => 'employee_firstname']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_middlename">Middle Name</label>
-                                    <input class="form-control" name="employee_middlename" id="employee_middle" />
+                                    {{ Form::label('employee_middlename', 'Middle Name') }}
+                                    {{ Form::text('employee_middlename', (isset($data['employee'])) ? $data['employee']['middle_name'] : '', ['class' => 'form-control', 'id' => 'employee_middlename']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_lastname">Last Name</label>
-                                    <input class="form-control" name="employee_lastname" id="employee_lastname" />
+                                    {{ Form::label('employee_lastname', 'Last Name') }}
+                                    {{ Form::text('employee_lastname', (isset($data['employee'])) ? $data['employee']['last_name'] : '', ['class' => 'form-control', 'id' => 'employee_lastname']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_gender">Gender</label>
-                                    <select name="employee_gender" class="form-control">
-                                        <option value="">[Select Gender]</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
+                                    {{ Form::label('employee_gender', 'Gender') }}
+                                    {{ Form::select('employee_gender', $data['gender'], (isset($data['employee']['gender']) ? $data['employee']['gender'] : null), ['class' => 'form-control', 'placeholder' => '[Select Gender]']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_marital_status">Marital Status</label>
-                                    <select name="" class="form-control">
-                                        <option value="">[Select Marital Status]</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Separated">Separated</option>
-                                        <option value="Widowed">Widowed</option>
-                                    </select>
+                                    {{ Form::label('employee_marital_status', 'Marital Status') }}
+                                    {{ Form::select('employee_marital_status', $data['marital_status'], (isset($data['employee']['marital_status']) ? $data['employee']['marital_status'] : null), ['class' => 'form-control', 'placeholder' => '[Select Marital Status]']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_birthday">Birthday</label>
+                                    {{ Form::label('employee_birthday', 'Birthday') }}
                                     <div class="input-group date datepicker" id="employee_birthday">
-                                        <input type="text" class="form-control" name="employee_birthday" />
+                                        {{ Form::text('employee_birthday', (isset($data['employee'])) ? $data['employee']['birthdate'] : '', ['class' => 'form-control', 'id' => 'employee_birthday']) }}
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -89,27 +82,22 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Employee Status</label>
-                                    <select name="employee_status" class="form-control">
-                                        <option value="">[Select Employee Status]</option>
-                                        <option value="Probationary">Probationary</option>
-                                        <option value="Permanent">Permanent</option>
-                                        <option value="Contractual">Contractual</option>
-                                    </select>
+                                    {{ Form::label('employee_status', 'Employee Status') }}
+                                    {{ Form::select('employee_status', $data['employee_status'], (isset($data['employee']['employee_status']) ? $data['employee']['employee_status'] : null), ['class' => 'form-control', 'placeholder' => '[Select Employee Status]']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_date_hired">Date Hired</label>
+                                    {{ Form::label('employee_date_hired', 'Date Hired') }}
                                     <div class="input-group date datepicker" id="employee_date_hired">
-                                        <input type="text" class="form-control" name="employee_date_hired" />
+                                        {{ Form::text('employee_date_hired', (isset($data['employee'])) ? $data['employee']['date_hired'] : '', ['class' => 'form-control', 'id' => 'employee_date_hired']) }}
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee_date_regularized">Date Regularized</label>
+                                    {{ Form::label('employee_date_regularized', 'Date Regularized') }}
                                     <div class="input-group date datepicker" id="employee_date_regularized">
-                                        <input type="text" class="form-control" name="employee_date_regularized" />
+                                        {{ Form::text('employee_date_regularized', (isset($data['employee'])) ? $data['employee']['date_regularized'] : '', ['class' => 'form-control', 'id' => 'employee_date_regularized']) }}
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -120,8 +108,8 @@
                                     <select name="employee_department" class="form-control">
                                         <option value="">[Select Department]</option>
                                         @foreach ($data['departments'] as $department)
-                                            @if (isset($data['team']))
-                                                <option value="{{ $department['id'] }}" @if($department['id'] == $data['team']['department_id']) selected="selected" @endif>{{ $department['name'] }}</option>
+                                            @if (isset($data['employee']))
+                                                <option value="{{ $department['id'] }}" @if($department['id'] == $data['employee']['department_id']) selected="selected" @endif>{{ $department['name'] }}</option>
                                             @else
                                                 <option value="{{ $department['id'] }}">{{ $department['name'] }}</option>
                                             @endif
@@ -134,12 +122,11 @@
                                     <select name="employee_team" class="form-control">
                                         <option value="">[Select Team]</option>
                                         @foreach ($data['teams'] as $team)
-                                            @if (isset($data['team']))
-                                                <option value="{{ $team['id'] }}" @if($team['id'] == $data['team']['department_id']) selected="selected" @endif>{{ $team['name'] }}</option>
+                                            @if (isset($data['employee']))
+                                                <option value="{{ $team['id'] }}" @if($team['id'] == $data['employee']['department_id']) selected="selected" @endif>{{ $team['name'] }}</option>
                                             @else
                                                 <option value="{{ $team['id'] }}">{{ $team['name'] }}</option>
                                             @endif
-
                                         @endforeach
                                     </select>
                                 </div>
@@ -157,42 +144,38 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Username</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('account_username', 'Username') }}
+                                    {{ Form::text('account_username', (isset($data['account'])) ? $data['account']['username'] : '', ['class' => 'form-control', 'id' => 'account_username']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="form-control" type="password" />
+                                    {{ Form::label('account_password', 'Password') }}
+                                    {{ Form::text('account_password', (isset($data['account'])) ? $data['account']['password'] : '', ['class' => 'form-control', 'id' => 'account_password']) }}
+                                    <small>
+                                        <label>
+                                            {{ Form::checkbox('show_password', 'show_password', false) }} Show Password
+                                        </label>
+                                    <a href="#">Generate Password</a>
+                                    </small>
                                 </div>
                                 <div class="form-group">
-                                    <label>Confirm Password</label>
-                                    <input class="form-control" type="password" />
+                                    {{ Form::label('account_password2', 'Confirm Password') }}
+                                    {{ Form::text('account_password2', (isset($data['account'])) ? $data['account']['password'] : '', ['class' => 'form-control', 'id' => 'account_password2']) }}
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox">Show Password
-                                    </label>
-                                </div>
-                                <button type="button" class="btn btn-xs btn-info">Generate Password</button>
+
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('account_email', 'Email') }}
+                                    {{ Form::text('account_email', (isset($data['account'])) ? $data['account']['email'] : '', ['class' => 'form-control', 'id' => 'account_email']) }}
                                 </div>
                                 <div class="form-group">
                                     <label>User Role</label>
-                                    <select name="" class="form-control">
-                                        <option>[Select User Role]</option>
-                                        <option>User</option>
-                                        <option>Admin</option>
-                                        <option>HR</option>
-                                        <option>Finance</option>
-                                    </select>
+                                    {{ Form::label('account_role', 'User Role') }}
+                                    {{ Form::select('account_role', $data['backoffice_roles'], (isset($data['account']['role']) ? $data['account']['role'] : null), ['class' => 'form-control', 'placeholder' => '[Select Account Role]']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label>Biometrics ID</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('account_biometrics_id', 'Biometrics ID') }}
+                                    {{ Form::text('account_biometrics_id', (isset($data['account'])) ? $data['account']['biometrics_id'] : '', ['class' => 'form-control', 'id' => 'account_biometrics_id']) }}
                                 </div>
                             </div>
                         </div>
@@ -208,49 +191,43 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>TIN</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('government_number_tin', 'TIN') }}
+                                    {{ Form::text('government_number_tin', (isset($data['government_number'])) ? $data['government_number']['tin'] : '', ['class' => 'form-control', 'id' => 'government_number_tin']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label>PhilHealth</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('government_number_philhealth', 'PhilHealth') }}
+                                    {{ Form::text('government_number_philhealth', (isset($data['government_number'])) ? $data['government_number']['philhealth'] : '', ['class' => 'form-control', 'id' => 'government_number_philhealth']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label>Pag-ibig</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('government_number_pagibig', 'Pag-ibig') }}
+                                    {{ Form::text('government_number_pagibig', (isset($data['government_number'])) ? $data['government_number']['pagibig'] : '', ['class' => 'form-control', 'id' => 'government_number_pagibig']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label>SSS</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('government_number_sss', 'SSS') }}
+                                    {{ Form::text('government_number_sss', (isset($data['government_number'])) ? $data['government_number']['sss'] : '', ['class' => 'form-control', 'id' => 'government_number_sss']) }}
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Tax Status</label>
-                                    <select name="" class="form-control">
-                                        <option>[Select Tax Status]</option>
-                                        <option></option>
-                                    </select>
+                                    {{ Form::label('government_number_tax_status', 'Tax Status') }}
+                                    {{ Form::select('government_number_tax_status', $data['tax_status'], (isset($data['government_number']['tax_status']) ? $data['government_number']['tax_status'] : null), ['class' => 'form-control', 'placeholder' => '[Select Tax Status]']) }}
                                 </div>
                                 <div class="form-group">
                                     <label>PhilHealth Effective Coverage Date</label>
-                                    <div class='input-group date datepicker' id='employee_philhealth_effectivity'>
-                                        <input type='text' class="form-control" />
+                                    <div class="input-group date datepicker" id="government_number_philhealth_effectivity_date">
+                                        {{ Form::text('government_number_philhealth_effectivity_date', (isset($data['government_number'])) ? $data['government_number']['philhealth_effectivity_date'] : '', ['class' => 'form-control', 'id' => 'government_number_philhealth_effectivity_date']) }}
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Fixed Pag-ibig Contribution</label>
-                                    <input class="form-control" />
+                                    {{ Form::label('government_number_pagibig_contribution', 'Fixed Pag-ibig Contribution') }}
+                                    {{ Form::text('government_number_pagibig_contribution', (isset($data['government_number'])) ? $data['government_number']['pagibig_contribution'] : '', ['class' => 'form-control', 'id' => 'government_number_pagibig_contribution']) }}
                                 </div>
                                 <div class="form-group">
-                                    <label>BIR Expanded Witholding Tax</label>
-                                    <select name="" class="form-control">
-                                        <option>[Select Tax Status]</option>
-                                        <option></option>
-                                    </select>
+                                    {{ Form::label('government_number_withholding_tax', 'BIR Expanded Witholding Tax') }}
+                                    {{ Form::select('government_number_withholding_tax', $data['withholding_tax'], (isset($data['government_number']['withholding_tax']) ? $data['government_number']['withholding_tax'] : null), ['class' => 'form-control', 'placeholder' => '[Select Withholding Tax]']) }}
                                 </div>
                             </div>
                         </div>
@@ -391,7 +368,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">@if (isset($data['employee']))Update @else Add @endif Team</button>
+                <button type="submit" class="btn btn-primary">@if (isset($data['employee']))Update @else Add @endif Employee</button>
                 <a href="/settings/employees" class="btn btn-link">Cancel</a>
             </div>
         </form>

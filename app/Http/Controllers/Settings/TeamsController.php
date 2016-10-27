@@ -26,11 +26,10 @@ class TeamsController extends Controller
     {
         $data = [];
         $teamModel = new Team;
-        $teams = $teamModel::all();
+        $teams = $teamModel::all()->toArray();
 
         $departmentModel = new Department;
         $departments = $departmentModel::all()->keyBy('id')->toArray();
-
 
         $data['teams'] = $teams;
         $data['departments'] = $departments;

@@ -32,7 +32,7 @@
     <br/>
     <div class="row">
         <div class="col-lg-6">
-            @if ($data['teams']->isEmpty())
+            @if (empty($data['teams']))
                 <div class="well">
                     No teams yet. Would you like to <a href="/settings/teams/add"> add one</a>?
                 </div>

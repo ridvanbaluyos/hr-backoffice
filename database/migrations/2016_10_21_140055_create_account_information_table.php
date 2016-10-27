@@ -14,18 +14,22 @@ class CreateAccountInformationTable extends Migration
     public function up()
     {
         //
-        Schema::create('account_information', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->string('username', 32);
-            $table->string('password', 256);
-            $table->string('email', 32);
-            $table->enum('role', ['Administrator', 'User']);
-            $table->string('biometrics_id', 256);
-            $table->index(['username']);
-            $table->unique(['username']);
-            $table->unique(['email']);
-        });
+        if (!Schema::hasTable('account_information')) {
+            Schema::create('account_information', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id');
+                $table->string('username', 32);
+                $table->string('password', 256);
+                $table->string('email', 32);
+                $table->enum('role', ['Administrator', 'User']);
+                $table->string('biometrics_id', 256);
+                $table->string('created_by', 32);
+                $table->timestamps();
+                $table->index(['username']);
+                $table->unique(['username']);
+                $table->unique(['email']);
+            });
+        }
     }
 
     /**

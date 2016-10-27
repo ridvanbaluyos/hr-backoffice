@@ -66,10 +66,14 @@
 <!-- Datetime Picker JS -->
 <script type="text/javascript">
     $(function () {
-        $('#apply_leave_startdate, #employee_date_hired, #employee_date_regularized, #employee_birthday').datetimepicker({
-            format: 'MM/DD/YYYY',
+        $('#apply_leave_startdate, #employee_date_hired, #employee_date_regularized, #employee_philhealth_effectivity').datetimepicker({
+            format: 'YYYY-MM-DD',
             minDate: new Date(),
             useCurrent: true,
+        });
+
+        $('#employee_birthday').datetimepicker({
+            format: 'YYYY-MM-DD',
         });
 
         $('#logout').click(function () {

@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Department;
 use App\Team;
+use App\EmployeeInformation;
+use App\AccountInformation;
+use App\GovernmentNumber;
 
 class EmployeesController extends Controller
 {
@@ -25,10 +28,17 @@ class EmployeesController extends Controller
     public function getIndex()
     {
         $data = [];
-        $departmentModel = new Department;
-        $departments = $departmentModel::all();
-
+        $departmentModel = new Department();
+        $departments = $departmentModel::all()->keyBy('id')->toArray();
         $data['departments'] = $departments;
+
+        $teamModel = new Team();
+        $teams = $teamModel::all()->keyBy('id')->toArray();
+        $data['teams'] = $teams;
+
+        $employeeInformationModel = new EmployeeInformation();
+        $employeeInformation = $employeeInformationModel::all()->keyBy('id')->toArray();
+        $data['employees'] = $employeeInformation;
 
         return view('settings.employees.index', ['data' => $data]);
     }
@@ -40,23 +50,159 @@ class EmployeesController extends Controller
     {
         $data = [];
         $departmentModel = new Department;
-        $departments = $departmentModel::all();
+        $departments = $departmentModel::all()->toArray();
         $data['departments'] = $departments;
 
         $teamModel = new Team;
-        $teams = $teamModel::all();
+        $teams = $teamModel::all()->toArray();
         $data['teams'] = $teams;
+
+        $data['gender'] = config('formvalues.gender');
+        $data['marital_status'] = config('formvalues.marital_status');
+        $data['employee_status'] = config('formvalues.employee_status');
+        $data['backoffice_roles'] = config('formvalues.backoffice_roles');
+        $data['tax_status'] = config('formvalues.tax_status');
+        $data['withholding_tax'] = config('formvalues.withholding_tax');
 
         return view('settings.employees.add', ['data' => $data]);
     }
 
     /**
-     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postAdd(Request $request)
     {
         // Employee Information
-        $employeeId = $request->input('employee_id');
+        $employeeNumber = $request->input('employee_number');
+        $employeeFirstName = $request->input('employee_firstname');
+        $employeeMiddleName = $request->input('employee_middlename');
+        $employeeLastName = $request->input('employee_lastname');
+        $employeeGender = $request->input('employee_gender');
+        $employeeMaritalStatus = $request->input('employee_marital_status');
+        $employeeBirthday = $request->input('employee_birthday');
+        $employeeStatus = $request->input('employee_status');
+        $employeeDateHired = $request->input('employee_date_hired');
+        $employeeDateRegularized = $request->input('employee_date_regularized');
+        $employeeDepartment = $request->input('employee_department');
+        $employeeTeam = $request->input('employee_team');
+        $createdBy = Auth::user()->email;
+
+        // Account Information
+        $accountUsername = $request->input('account_username');
+        $accountPassword = $request->input('account_password');
+        $accountEmail = $request->input('account_email');
+        $accountRole = $request->input('account_role');
+        $accountBiometricsId = $request->input('account_biometrics_id');
+
+        // Government Numbers
+        $governmentNumberTin = $request->input('government_number_tin');
+        $governmentNumberPhilhealth = $request->input('government_number_philhealth');
+        $governmentNumberPagibig = $request->input('government_number_pagibig');
+        $governmentNumberSss = $request->input('government_number_sss');
+        $governmentNumberTaxStatus = $request->input('government_number_tax_status');
+        $governmentNumberWithholdingTax= $request->input('government_number_withholding_tax');
+        $governmentNumberPhilhealthEffectivityDate = $request->input('government_number_philhealth_effectivity_date');
+        $governmentNumberPagibigContribution = $request->input('government_number_pagibig_contribution');
+
+        try {
+            // Employee Information
+            $employeeInformationModel = new EmployeeInformation();
+            $employeeInformationModel->employee_number = $employeeNumber;
+            $employeeInformationModel->last_name = $employeeLastName;
+            $employeeInformationModel->first_name = $employeeFirstName;
+            $employeeInformationModel->middle_name = $employeeMiddleName;
+            $employeeInformationModel->gender = $employeeGender;
+            $employeeInformationModel->marital_status = $employeeMaritalStatus;
+            $employeeInformationModel->birthdate = date("Y-m-d", strtotime($employeeBirthday));
+            $employeeInformationModel->employee_status = $employeeStatus;
+            $employeeInformationModel->date_hired = date("Y-m-d", strtotime($employeeDateHired));
+            $employeeInformationModel->date_regularized = date("Y-m-d", strtotime($employeeDateRegularized));
+            $employeeInformationModel->department_id = $employeeDepartment;
+            $employeeInformationModel->team_id = $employeeTeam;
+            $employeeInformationModel->created_by = $createdBy;
+            $employeeInformationModel->save();
+
+            // Account Information
+            $accountInformationModel = new AccountInformation();
+            $accountInformationModel->user_id = $employeeInformationModel->id;
+            $accountInformationModel->username = $accountUsername;
+            $accountInformationModel->password = $accountPassword;
+            $accountInformationModel->email = $accountEmail;
+            $accountInformationModel->role = $accountRole;
+            $accountInformationModel->biometrics_id = $accountBiometricsId;
+            $accountInformationModel->created_by = $createdBy;
+            $accountInformationModel->save();
+
+            // Government Numbers
+            $governmentNumberModel = new GovernmentNumber();
+            $governmentNumberModel->user_id = $employeeInformationModel->id;
+            $governmentNumberModel->tin = $governmentNumberTin;
+            $governmentNumberModel->philhealth = $governmentNumberPhilhealth;
+            $governmentNumberModel->pagibig = $governmentNumberPagibig;
+            $governmentNumberModel->sss= $governmentNumberSss;
+            $governmentNumberModel->tax_status = $governmentNumberTaxStatus;
+            $governmentNumberModel->withholding_tax = $governmentNumberWithholdingTax;
+            $governmentNumberModel->philhealth_effectivity_date = $governmentNumberPhilhealthEffectivityDate;
+            $governmentNumberModel->pagibig_contribution = $governmentNumberPagibigContribution;
+            $governmentNumberModel->created_by = $createdBy;
+            $governmentNumberModel->save();
+
+            $request->session()->flash('alert-class', 'success');
+            $request->session()->flash('alert-message', 'Employee #: ' . $employeeNumber . ' has been successfully added!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            dd($e);
+            switch ($e->getCode()) {
+                case '23000':
+                    $message = 'Employee #: ' . $employeeNumber . ' already exists.';
+                    break;
+                default:
+                    $message = 'Something went wrong.';
+                    break;
+            }
+            $request->session()->flash('alert-class', 'danger');
+            $request->session()->flash('alert-message', $message);
+        }
+
+        return redirect('settings/employees');
+    }
+
+    public function getEdit($id)
+    {
+        $employeeModel = new EmployeeInformation();
+        $employee = $employeeModel->find($id);
+        $data['employee'] = $employee;
+
+        $accountModel = new AccountInformation();
+        $account = $accountModel->where('user_id', $id)->get();
+        $data['account'] = $account[0];
+
+        $governmentNumberModel = new GovernmentNumber();
+        $governmentNumber = $governmentNumberModel->where('user_id', $id)->get();
+        $data['government_number'] = $governmentNumber[0];
+
+        $departmentModel = new Department();
+        $departments = $departmentModel::all()->toArray();
+        $data['departments'] = $departments;
+
+        $teamModel = new Team;
+        $teams = $teamModel::all()->toArray();
+        $data['teams'] = $teams;
+
+        $data['gender'] = config('formvalues.gender');
+        $data['marital_status'] = config('formvalues.marital_status');
+        $data['employee_status'] = config('formvalues.employee_status');
+        $data['backoffice_roles'] = config('formvalues.backoffice_roles');
+        $data['tax_status'] = config('formvalues.tax_status');
+        $data['withholding_tax'] = config('formvalues.withholding_tax');
+
+        return view('settings.employees.add', ['data' => $data]);
+    }
+
+    public function postEdit(Request $request, $id)
+    {
+        // Employee Information
+        $employeeNumber = $request->input('employee_number');
         $employeeFirstName = $request->input('employee_firstname');
         $employeeMiddleName = $request->input('employee_middlename');
         $employeeLastName = $request->input('employee_lastname');
@@ -69,7 +215,77 @@ class EmployeesController extends Controller
         $employeeDepartment = $request->input('employee_department');
         $employeeTeam = $request->input('employee_team');
 
-        dd($request->all());
+        // Account Information
+        $accountUsername = $request->input('account_username');
+        $accountPassword = $request->input('account_password');
+        $accountEmail = $request->input('account_email');
+        $accountRole = $request->input('account_role');
+        $accountBiometricsId = $request->input('account_biometrics_id');
 
+        // Government Numbers
+        $governmentNumberTin = $request->input('government_number_tin');
+        $governmentNumberPhilhealth = $request->input('government_number_philhealth');
+        $governmentNumberPagibig = $request->input('government_number_pagibig');
+        $governmentNumberSss = $request->input('government_number_sss');
+        $governmentNumberTaxStatus = $request->input('government_number_tax_status');
+        $governmentNumberWithholdingTax= $request->input('government_number_withholding_tax');
+
+        try {
+            // Employee Information
+            $employeeInformationModel = new EmployeeInformation();
+            $employee = $employeeInformationModel->find($id);
+            $employee->last_name = $employeeLastName;
+            $employee->first_name = $employeeFirstName;
+            $employee->middle_name = $employeeMiddleName;
+            $employee->gender = $employeeGender;
+            $employee->marital_status = $employeeMaritalStatus;
+            $employee->birthdate = date("Y-m-d", strtotime($employeeBirthday));
+            $employee->employee_status = $employeeStatus;
+            $employee->date_hired = date("Y-m-d", strtotime($employeeDateHired));
+            $employee->date_regularized = date("Y-m-d", strtotime($employeeDateRegularized));
+            $employee->department_id = $employeeDepartment;
+            $employee->team_id = $employeeTeam;
+            $employee->save();
+
+            // Account Information
+            $accountInformationModel = new AccountInformation();
+            $account = $accountInformationModel->where('user_id', $id)->first();
+            $account->user_id = $id;
+            $account->username = $accountUsername;
+            $account->password = $accountPassword;
+            $account->email = $accountEmail;
+            $account->role = $accountRole;
+            $account->biometrics_id = $accountBiometricsId;
+            $account->save();
+
+            // Government Numbers
+            $governmentNumberModel = new GovernmentNumber();
+            $governmentNumber = $governmentNumberModel->where('user_id', $id)->first();
+            $governmentNumber->user_id = $id;
+            $governmentNumber->tin = $governmentNumberTin;
+            $governmentNumber->philhealth = $governmentNumberPhilhealth;
+            $governmentNumber->pagibig = $governmentNumberPagibig;
+            $governmentNumber->sss = $governmentNumberSss;
+            $governmentNumber->tax_status = $governmentNumberTaxStatus;
+            $governmentNumber->withholding_tax = $governmentNumberWithholdingTax;
+            $governmentNumber->save();
+
+            $request->session()->flash('alert-class', 'success');
+            $request->session()->flash('alert-message', 'Employee #: ' . $employeeNumber . ' has been successfully update!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            dd($e);
+            switch ($e->getCode()) {
+                case '23000':
+                    $message = 'Employee #: ' . $employeeNumber . ' already exists.';
+                    break;
+                default:
+                    $message = 'Something went wrong.';
+                    break;
+            }
+            $request->session()->flash('alert-class', 'danger');
+            $request->session()->flash('alert-message', $message);
+        }
+
+        return redirect('settings/employees');
     }
 }

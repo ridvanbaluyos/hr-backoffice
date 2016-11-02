@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Department;
 use App\Team;
@@ -38,7 +39,8 @@ class EmployeesController extends Controller
         $data['teams'] = $teams;
 
         $employeeInformationModel = new EmployeeInformation();
-        $employeeInformation = $employeeInformationModel::all()->keyBy('id')->toArray();
+        $employeeInformation = $employeeInformationModel::paginate(15);
+
         $data['employees'] = $employeeInformation;
 
         return view('settings.employees.index', ['data' => $data]);

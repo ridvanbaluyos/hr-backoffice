@@ -18,14 +18,9 @@
 </div>
 <!-- /.row -->
 
+@include('layouts.flash-message')
 <div class="row">
-    <div class="col-lg-6">
-        @if (Session::has('alert-message'))
-        <div class="alert alert-{{ Session::get('alert-class') }}">
-            <a href="#" class="close" data-dismiss="alert">&times;</a>
-            {{ Session::get('alert-message') }}
-        </div>
-        @endif
+    <div class="col-lg-12">
         <a class="btn btn-primary" id="" href="/settings/departments/add">Add Department</a>
     </div>
 </div>

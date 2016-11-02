@@ -21,7 +21,7 @@
 @include('layouts.flash-message')
 <div class="row">
     <div class="col-lg-12">
-        <a class="btn btn-primary" id="" href="/settings/teams/add">Add Team</a>
+        <a class="btn btn-primary" id="" href="/settings/teams/add"><i class="fa fa-plus"></i> Add Team</a>
     </div>
 </div>
 <br/>

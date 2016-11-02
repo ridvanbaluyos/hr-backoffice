@@ -21,7 +21,7 @@
 @include('layouts.flash-message')
 <div class="row">
     <div class="col-lg-12">
-        <a class="btn btn-primary" id="" href="/settings/employees/add">Add Employee</a>
+        <a class="btn btn-primary" id="" href="/settings/employees/add"><i class="fa fa-plus"></i> Add Employee</a>
     </div>
 </div>
 <br/>
@@ -51,7 +51,7 @@
                             <td>{{ $data['teams'][$employee['team_id']]['name'] }}</td>
                             <td>{{ $data['departments'][$employee['department_id']]['name'] }}</td>
                             <td>
-                                <a href="/settings/employees/edit/{{ $employee['id'] }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a> | 
+                                <a href="/settings/employees/edit/{{ $employee['id'] }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a> |
                                 <a href="/settings/employees/delete/{{ $employee['id'] }}"><i class="fa fa-times" aria-hidden="true"></i> Delete</a>
 
                             </td>

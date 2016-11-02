@@ -47,7 +47,7 @@ return [
     // HR Backoffice Roles
     'backoffice_roles' => [
         'User' => 'User',
-        'Admininstrator' => 'Admininstrator',
+        'Administrator' => 'Administrator',
     ],
 
     // Tax Status

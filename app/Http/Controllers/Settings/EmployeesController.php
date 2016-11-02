@@ -9,6 +9,7 @@ use App\Team;
 use App\EmployeeInformation;
 use App\AccountInformation;
 use App\GovernmentNumber;
+use App\SalaryInformation;
 
 class EmployeesController extends Controller
 {
@@ -105,6 +106,21 @@ class EmployeesController extends Controller
         $governmentNumberPhilhealthEffectivityDate = $request->input('government_number_philhealth_effectivity_date');
         $governmentNumberPagibigContribution = $request->input('government_number_pagibig_contribution');
 
+        // Salary Information
+        $salaryOtApplicable = $request->input('salary_ot_applicable');
+        $salaryLateApplicable = $request->input('salary_late_applicable');
+        $salaryUndertimeApplicable = $request->input('salary_undertime_applicable');
+        $salaryNightDiffApplicable = $request->input('salary_night_diff_applicable');
+        $salaryHolidayApplicable = $request->input('salary_holiday_applicable');
+//        $salaryPayrollGroup = $request->input('salary_payroll_group');
+        $salaryExcludeFromPayroll = $request->input('salary_exclude_from_payroll');
+        $salaryExcludeFromTar = $request->input('salary_exclude_from_tar');
+        $salaryHasSss = $request->input('salary_has_sss');
+        $salaryHasWithholdingTax = $request->input('salary_has_withholding_tax');
+        $salaryHasPhilhealth = $request->input('salary_has_philhealth');
+        $salaryHasPagibig = $request->input('salary_has_pagibig');
+        $salaryWithPreviousEmployer = $request->input('salary_with_previous_employer');
+
         try {
             // Employee Information
             $employeeInformationModel = new EmployeeInformation();
@@ -148,6 +164,24 @@ class EmployeesController extends Controller
             $governmentNumberModel->created_by = $createdBy;
             $governmentNumberModel->save();
 
+            // Salary Information
+            $salaryInformationModel = new SalaryInformation();
+            $salaryInformationModel->user_id = $employeeInformationModel->id;
+            $salaryInformationModel->ot_applicable = $salaryOtApplicable;
+            $salaryInformationModel->late_applicable = $salaryLateApplicable;
+            $salaryInformationModel->undertime_applicable = $salaryUndertimeApplicable;
+            $salaryInformationModel->night_diff_applicable = $salaryNightDiffApplicable;
+            $salaryInformationModel->holiday_applicable = $salaryHolidayApplicable;
+            $salaryInformationModel->has_sss = $salaryHasSss;
+            $salaryInformationModel->has_withholding_tax = $salaryHasWithholdingTax;
+            $salaryInformationModel->has_philhealth = $salaryHasPhilhealth;
+            $salaryInformationModel->has_pagibig = $salaryHasPagibig;
+            $salaryInformationModel->with_previous_employer = $salaryWithPreviousEmployer;
+            $salaryInformationModel->exclude_from_payroll = $salaryExcludeFromPayroll;
+            $salaryInformationModel->exclude_from_tar = $salaryExcludeFromTar;
+            $salaryInformationModel->created_by = $createdBy;
+            $salaryInformationModel->save();
+
             $request->session()->flash('alert-class', 'success');
             $request->session()->flash('alert-message', 'Employee #: ' . $employeeNumber . ' has been successfully added!');
         } catch (\Illuminate\Database\QueryException $e) {
@@ -185,9 +219,13 @@ class EmployeesController extends Controller
         $departments = $departmentModel::all()->toArray();
         $data['departments'] = $departments;
 
-        $teamModel = new Team;
+        $teamModel = new Team();
         $teams = $teamModel::all()->toArray();
         $data['teams'] = $teams;
+
+        $salaryModel = new SalaryInformation();
+        $salary = $salaryModel->where('user_id', $id)->get();
+        $data['salary'] = $salary[0];
 
         $data['gender'] = config('formvalues.gender');
         $data['marital_status'] = config('formvalues.marital_status');
@@ -230,6 +268,21 @@ class EmployeesController extends Controller
         $governmentNumberTaxStatus = $request->input('government_number_tax_status');
         $governmentNumberWithholdingTax= $request->input('government_number_withholding_tax');
 
+        // Salary Information
+        $salaryOtApplicable = $request->input('salary_ot_applicable');
+        $salaryLateApplicable = $request->input('salary_late_applicable');
+        $salaryUndertimeApplicable = $request->input('salary_undertime_applicable');
+        $salaryNightDiffApplicable = $request->input('salary_night_diff_applicable');
+        $salaryHolidayApplicable = $request->input('salary_holiday_applicable');
+//        $salaryPayrollGroup = $request->input('salary_payroll_group');
+        $salaryExcludeFromPayroll = $request->input('salary_exclude_from_payroll');
+        $salaryExcludeFromTar = $request->input('salary_exclude_from_tar');
+        $salaryHasSss = $request->input('salary_has_sss');
+        $salaryHasWithholdingTax = $request->input('salary_has_withholding_tax');
+        $salaryHasPhilhealth = $request->input('salary_has_philhealth');
+        $salaryHasPagibig = $request->input('salary_has_pagibig');
+        $salaryWithPreviousEmployer = $request->input('salary_with_previous_employer');
+
         try {
             // Employee Information
             $employeeInformationModel = new EmployeeInformation();
@@ -270,8 +323,26 @@ class EmployeesController extends Controller
             $governmentNumber->withholding_tax = $governmentNumberWithholdingTax;
             $governmentNumber->save();
 
+            // Salary Information
+            $salaryInformationModel = new SalaryInformation();
+            $salaryInformationModel = $salaryInformationModel->where('user_id', $id)->first();
+            $salaryInformationModel->user_id = $id;
+            $salaryInformationModel->ot_applicable = $salaryOtApplicable;
+            $salaryInformationModel->late_applicable = $salaryLateApplicable;
+            $salaryInformationModel->undertime_applicable = $salaryUndertimeApplicable;
+            $salaryInformationModel->night_diff_applicable = $salaryNightDiffApplicable;
+            $salaryInformationModel->holiday_applicable = $salaryHolidayApplicable;
+            $salaryInformationModel->has_sss = $salaryHasSss;
+            $salaryInformationModel->has_withholding_tax = $salaryHasWithholdingTax;
+            $salaryInformationModel->has_philhealth = $salaryHasPhilhealth;
+            $salaryInformationModel->has_pagibig = $salaryHasPagibig;
+            $salaryInformationModel->with_previous_employer = $salaryWithPreviousEmployer;
+            $salaryInformationModel->exclude_from_payroll = $salaryExcludeFromPayroll;
+            $salaryInformationModel->exclude_from_tar = $salaryExcludeFromTar;
+            $salaryInformationModel->save();
+
             $request->session()->flash('alert-class', 'success');
-            $request->session()->flash('alert-message', 'Employee #: ' . $employeeNumber . ' has been successfully update!');
+            $request->session()->flash('alert-message', 'Employee #: ' . $employeeNumber . ' has been successfully updated!');
         } catch (\Illuminate\Database\QueryException $e) {
             dd($e);
             switch ($e->getCode()) {

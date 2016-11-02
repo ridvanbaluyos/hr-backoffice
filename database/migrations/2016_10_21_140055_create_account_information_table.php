@@ -21,7 +21,7 @@ class CreateAccountInformationTable extends Migration
                 $table->string('username', 32);
                 $table->string('password', 256);
                 $table->string('email', 32);
-                $table->enum('role', ['Administrator', 'User']);
+                $table->enum('role', ['Admin', 'User']);
                 $table->string('biometrics_id', 256);
                 $table->string('created_by', 32);
                 $table->timestamps();

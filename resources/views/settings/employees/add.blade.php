@@ -35,7 +35,7 @@
         {{ Form::open(['url' => '/settings/employees/add', 'method' => 'post', 'name' => 'employeeForm']) }}
     @endif
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">Employee Information</h3>
                     </div>
@@ -136,7 +136,7 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">Account Information</h3>
                     </div>
@@ -152,7 +152,7 @@
                                     {{ Form::text('account_password', (isset($data['account'])) ? $data['account']['password'] : '', ['class' => 'form-control', 'id' => 'account_password']) }}
                                     <small>
                                         <label>
-                                            {{ Form::checkbox('show_password', 'show_password', false) }} Show Password
+                                            {{ Form::checkbox('show_password', '1', false) }} Show Password
                                         </label>
                                     <a href="#">Generate Password</a>
                                     </small>
@@ -183,7 +183,7 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-warning">
                     <div class="panel-heading">
                         <h3 class="panel-title">Government Numbers</h3>
                     </div>
@@ -234,134 +234,136 @@
                     </div>
                 </div>
             </div>
+            {{----}}
+            {{--<div class="col-lg-12">--}}
+                {{--<div class="panel panel-default">--}}
+                    {{--<div class="panel-heading">--}}
+                        {{--<h3 class="panel-title">Salary Information</h3>--}}
+                    {{--</div>--}}
+                    {{--<div class="panel-body">--}}
+                        {{--<div class="row">--}}
+                            {{--<div class="col-lg-6">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Salary Type</label>--}}
+                                    {{--<select name="" class="form-control">--}}
+                                        {{--<option>[Select Salary Type]</option>--}}
+                                        {{--<option></option>--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Basic Salary</label>--}}
+                                    {{--<input class="form-control" />--}}
+                                {{--</div>--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Hourly Rate</label>--}}
+                                    {{--<input type="checkbox" /><input class="form-control" disabled="disabled"/>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="col-lg-6">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Non-Taxable Allowance</label>--}}
+                                    {{--<input type="checkbox" /><input class="form-control" disabled="disabled"/>--}}
+                                {{--</div>--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Taxable Allowance</label>--}}
+                                    {{--<input type="checkbox" /><input class="form-control" disabled="disabled"/>--}}
+                                {{--</div>--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Gross Salary</label>--}}
+                                    {{--<input class="form-control" />--}}
+                                {{--</div>--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Bank Name</label>--}}
+                                    {{--<select name="" class="form-control">--}}
+                                        {{--<option>[Select Bank]</option>--}}
+                                        {{--<option></option>--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label>Bank Account No.</label>--}}
+                                    {{--<input class="form-control" />--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{----}}
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">Salary Information</h3>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Salary Type</label>
-                                    <select name="" class="form-control">
-                                        <option>[Select Salary Type]</option>
-                                        <option></option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Basic Salary</label>
-                                    <input class="form-control" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Hourly Rate</label>
-                                    <input type="checkbox" /><input class="form-control" disabled="disabled"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Non-Taxable Allowance</label>
-                                    <input type="checkbox" /><input class="form-control" disabled="disabled"/>
-                                </div>
-                                <div class="form-group">
-                                    <label>Taxable Allowance</label>
-                                    <input type="checkbox" /><input class="form-control" disabled="disabled"/>
-                                </div>
-                                <div class="form-group">
-                                    <label>Gross Salary</label>
-                                    <input class="form-control" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Bank Name</label>
-                                    <select name="" class="form-control">
-                                        <option>[Select Bank]</option>
-                                        <option></option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Bank Account No.</label>
-                                    <input class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Salary Information</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> OT Applicable
+                                        {{ Form::checkbox('salary_ot_applicable', '1', (isset($data['salary'])) ? $data['salary']['ot_applicable'] : false) }} OT Applicable
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Late Applicable
+                                        {{ Form::checkbox('salary_late_applicable', '1', (isset($data['salary'])) ? $data['salary']['late_applicable'] : false) }} Late Applicable
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Undertime Applicable
+                                        {{ Form::checkbox('salary_undertime_applicable', '1', (isset($data['salary'])) ? $data['salary']['undertime_applicable'] : false) }} Undertime Applicable
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Night Diff Applicable
+                                        {{ Form::checkbox('salary_night_diff_applicable', '1', (isset($data['salary'])) ? $data['salary']['night_diff_applicable'] : false) }} Night Diff Applicable
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Holiday Applicable
+                                        {{ Form::checkbox('salary_holiday_applicable', '1', (isset($data['salary'])) ? $data['salary']['holiday_applicable'] : false) }} Holiday Applicable
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label>Payroll Group</label>
-                                    <select name="" class="form-control">
+                                    <select name="salary_payroll_group" class="form-control">
                                         <option>[Select Payroll Group]</option>
-                                        <option></option>
+                                        <option value="all" selected="selected">All</option>
                                     </select>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Exclude From Payroll
+                                        {{ Form::checkbox('salary_exclude_from_payroll', '1', (isset($data['salary'])) ? $data['salary']['exclude_from_payroll'] : false) }} Exclude from Payroll
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Exclude From TAR
+                                        {{ Form::checkbox('salary_exclude_from_tar', '1', (isset($data['salary'])) ? $data['salary']['exclude_from_tar'] : false) }} Exclude From TAR
                                     </label>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Has SSS
+                                        {{ Form::checkbox('salary_has_sss', '1', (isset($data['salary'])) ? $data['salary']['has_sss'] : false) }} Has SSS
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Has Witholding Tax
+                                        {{ Form::checkbox('salary_has_withholding_tax', '1', (isset($data['salary'])) ? $data['salary']['has_withholding_tax'] : false) }} Has Witholding Tax
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Has PhilHealth
+                                        {{ Form::checkbox('salary_has_philhealth', '1', (isset($data['salary'])) ? $data['salary']['has_philhealth'] : false) }} Has PhilHealth
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> Has Pag-ibig
+                                        {{ Form::checkbox('salary_has_pagibig', '1', (isset($data['salary'])) ? $data['salary']['has_pagibig'] : false) }} Has Pag-ibig
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" /> With Previous Employer
+                                        {{ Form::checkbox('salary_with_previous_employer', '1', (isset($data['salary'])) ? $data['salary']['with_previous_employer'] : false) }} With Previous Employer
                                     </label>
                                 </div>
                             </div>

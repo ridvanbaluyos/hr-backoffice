@@ -28,6 +28,16 @@
 </div>
 <!-- /.row -->
 
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <div class="row">
     @if (isset($data['employee']))
         {{ Form::open(['url' => '/settings/employees/edit/' . $data['employee']['id'], 'method' => 'post', 'name' => 'employeeForm']) }}
@@ -35,7 +45,7 @@
         {{ Form::open(['url' => '/settings/employees/add', 'method' => 'post', 'name' => 'employeeForm']) }}
     @endif
             <div class="col-lg-12">
-                <div class="panel panel-info">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Employee Information</h3>
                     </div>
@@ -136,7 +146,7 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="panel panel-danger">
+                <div class="panel panel-red">
                     <div class="panel-heading">
                         <h3 class="panel-title">Account Information</h3>
                     </div>
@@ -149,7 +159,7 @@
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('account_password', 'Password') }}
-                                    {{ Form::text('account_password', (isset($data['account'])) ? $data['account']['password'] : '', ['class' => 'form-control', 'id' => 'account_password']) }}
+                                    {{ Form::password('account_password', ['class' => 'form-control', 'id' => 'account_password']) }}
                                     <small>
                                         <label>
                                             {{ Form::checkbox('show_password', '1', false) }} Show Password
@@ -158,8 +168,8 @@
                                     </small>
                                 </div>
                                 <div class="form-group">
-                                    {{ Form::label('account_password2', 'Confirm Password') }}
-                                    {{ Form::text('account_password2', (isset($data['account'])) ? $data['account']['password'] : '', ['class' => 'form-control', 'id' => 'account_password2']) }}
+                                    {{ Form::label('account_password_confirmation', 'Confirm Password') }}
+                                    {{ Form::password('account_password_confirmation', ['class' => 'form-control', 'id' => 'account_password_confirmation']) }}
                                 </div>
 
                             </div>
@@ -183,7 +193,7 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="panel panel-warning">
+                <div class="panel panel-yellow">
                     <div class="panel-heading">
                         <h3 class="panel-title">Government Numbers</h3>
                     </div>
@@ -290,7 +300,7 @@
             {{--</div>--}}
             {{----}}
             <div class="col-lg-12">
-                <div class="panel panel-success">
+                <div class="panel panel-green">
                     <div class="panel-heading">
                         <h3 class="panel-title">Salary Information</h3>
                     </div>

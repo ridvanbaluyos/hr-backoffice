@@ -17,7 +17,7 @@
     </div>
 </div>
 <!-- /.row -->
-
+<example></example>
 @include('layouts.flash-message')
 <div class="row">
     <div class="col-lg-12">

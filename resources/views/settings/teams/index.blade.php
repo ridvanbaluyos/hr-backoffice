@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<example></example>
 <!-- Page Heading -->
 <div class="row">
     <div class="col-lg-12">

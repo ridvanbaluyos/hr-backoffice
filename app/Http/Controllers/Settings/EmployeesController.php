@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SettingsEmployeesAddPost;
 use App\Department;
 use App\Team;
 use App\EmployeeInformation;
@@ -239,7 +240,7 @@ class EmployeesController extends Controller
         return view('settings.employees.add', ['data' => $data]);
     }
 
-    public function postEdit(Request $request, $id)
+    public function postEdit(SettingsEmployeesAddPost $request, $id)
     {
         // Employee Information
         $employeeNumber = $request->input('employee_number');

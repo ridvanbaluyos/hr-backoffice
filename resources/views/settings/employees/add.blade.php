@@ -1,8 +1,15 @@
 @extends('layouts.app')
 @section('content')
-<!-- Datetime Picker CSS -->
-<link href="{{ asset('css/bootstrap-datetimepicker.css') }}" rel="stylesheet">
-
+<!-- Chained Select -->
+<script type="text/javascript" charset="utf-8">
+    $(function() {
+        // Department-Team Select Dropdowns
+        $("#employee_team").chained("#employee_department");
+        @if (isset($data['employee']))
+            $("#employee_team").val('{{ $data['employee']['team_id'] }}');
+        @endif
+    });
+</script>
 <!-- Page Heading -->
 <div class="row">
     <div class="col-lg-12">
@@ -115,7 +122,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="employee_department">Department</label>
-                                    <select name="employee_department" class="form-control">
+                                    <select name="employee_department" id="employee_department" class="form-control">
                                         <option value="">[Select Department]</option>
                                         @foreach ($data['departments'] as $department)
                                             @if (isset($data['employee']))
@@ -129,13 +136,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="employee_team">Team</label>
-                                    <select name="employee_team" class="form-control">
+                                    <select name="employee_team" id="employee_team" class="form-control">
                                         <option value="">[Select Team]</option>
                                         @foreach ($data['teams'] as $team)
                                             @if (isset($data['employee']))
-                                                <option value="{{ $team['id'] }}" @if($team['id'] == $data['employee']['department_id']) selected="selected" @endif>{{ $team['name'] }}</option>
+                                                <option value="{{ $team['id'] }}" @if($team['id'] == $data['employee']['department_id']) selected="selected" @endif class="{{ $team['department_id'] }}">{{ $team['name'] }}</option>
                                             @else
-                                                <option value="{{ $team['id'] }}">{{ $team['name'] }}</option>
+                                                <option value="{{ $team['id'] }}" class="{{ $team['department_id'] }}">{{ $team['name'] }}</option>
                                             @endif
                                         @endforeach
                                     </select>

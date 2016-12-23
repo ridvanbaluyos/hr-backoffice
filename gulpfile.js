@@ -13,7 +13,28 @@ require('laravel-elixir-vue-2');
  |
  */
 
-elixir(mix => {
-    mix.sass('app.scss')
-       .webpack('app.js');
+elixir(function(mix) {
+    mix
+        .styles([
+            'bootstrap.min.css',
+            'bootstrap-datetimepicker.css',
+            'font-awesome.min.css',
+            'sb-admin.css'
+        ], 'public/assets/css/app.css')
+
+        .scripts([
+            'jquery.min.js',
+            'app.js',
+            'bootstrap.min.js',
+            'plugins/moment/moment.min.js',
+            'plugins/datetimepicker/bootstrap-datetimepicker.js',
+            'plugins/chained/jquery.chained.min.js'
+        ], 'public/assets/js/app.js')
+
+        .copy('resources/assets/fonts', 'public/build/assets/fonts')
+
+        .version([
+            'public/assets/css/app.css',
+            'public/assets/js/app.js'
+        ])
 });

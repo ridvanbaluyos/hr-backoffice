@@ -11,5 +11,12 @@ bootstrap/cache/
 .env.php
 .env
 
+# Public folder
+public/assets/*
+public/build/*
+
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
+
+# IDE
+.idea/*

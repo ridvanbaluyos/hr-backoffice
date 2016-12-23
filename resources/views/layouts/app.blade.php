@@ -9,14 +9,8 @@
 
     <title>HR Backoffice | OLX.ph</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ elixir('assets/css/app.css') }}">
+    <script src="{{ elixir('assets/js/app.js') }}"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,18 +44,6 @@
 
 </div>
 <!-- /#wrapper -->
-
-<!-- jQuery -->
-<script src="{{ asset('js/jquery.js') }}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ asset('js/plugins/moment/moment.min.js') }}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ asset('js/bootstrap-datetimepicker.js') }}"></script>
 
 <!-- Datetime Picker JS -->
 <script type="text/javascript">

@@ -21,7 +21,7 @@
 @include('layouts.flash-message')
 <div class="row">
     <div class="col-lg-12">
-        <a class="btn btn-primary" id="" href="/settings/departments/add"><i class="fa fa-plus"></i> Add Department</a>
+        <a class="btn btn-success" id="" href="/settings/departments/add"><i class="fa fa-plus"></i> Add Department</a>
     </div>
 </div>
 <br/>
@@ -47,7 +47,8 @@
                             <td>{{ $department->id }}</td>
                             <td>{{ $department->name }}</td>
                             <td>
-                                <a href="/settings/departments/edit/{{ $department->id }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
+                                <a href="/settings/departments/edit/{{ $department->id }}"  class="btn btn-warning btn-xs"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
+                                <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-times" aria-hidden="true"></i> Delete</a>
                             </td>
                         </tr>
                         @endforeach

@@ -147,6 +147,11 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                <div class="form-group">
+                                    {{ Form::label('employee_position', 'Job Position') }}
+                                    {{ Form::text('employee_position', (isset($data['employee'])) ? $data['employee']['position'] : '', ['class' => 'form-control', 'id' => 'employee_position']) }}
+                                </div>
                             </div>
                         </div>
                     </div>

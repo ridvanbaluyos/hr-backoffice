@@ -18,3 +18,25 @@
 // const app = new Vue({
 //     el: '#app'
 // });
+
+$(function () {
+    $('.delete').click(function () {
+        swal({
+                title: "Are you sure?",
+                text: "This is irreversible and will be logged.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    swal("Deleted!", "Item has been deleted.", "success");
+                } else {
+                }
+            });
+    });
+});

@@ -86,6 +86,7 @@ class EmployeesController extends Controller
         $employeeMaritalStatus = $request->input('employee_marital_status');
         $employeeBirthday = $request->input('employee_birthday');
         $employeeStatus = $request->input('employee_status');
+        $employeePosition = $request->input('employee_position');
         $employeeDateHired = $request->input('employee_date_hired');
         $employeeDateRegularized = $request->input('employee_date_regularized');
         $employeeDepartment = $request->input('employee_department');
@@ -135,6 +136,7 @@ class EmployeesController extends Controller
             $employeeInformationModel->marital_status = $employeeMaritalStatus;
             $employeeInformationModel->birthdate = date("Y-m-d", strtotime($employeeBirthday));
             $employeeInformationModel->employee_status = $employeeStatus;
+            $employeeInformationModel->position = $employeePosition;
             $employeeInformationModel->date_hired = date("Y-m-d", strtotime($employeeDateHired));
             $employeeInformationModel->date_regularized = date("Y-m-d", strtotime($employeeDateRegularized));
             $employeeInformationModel->department_id = $employeeDepartment;
@@ -250,6 +252,7 @@ class EmployeesController extends Controller
         $employeeGender = $request->input('employee_gender');
         $employeeMaritalStatus = $request->input('employee_marital_status');
         $employeeBirthday = $request->input('employee_birthday');
+        $employeePosition = $request->input('employee_position');
         $employeeStatus = $request->input('employee_status');
         $employeeDateHired = $request->input('employee_date_hired');
         $employeeDateRegularized = $request->input('employee_date_regularized');
@@ -297,6 +300,7 @@ class EmployeesController extends Controller
             $employee->marital_status = $employeeMaritalStatus;
             $employee->birthdate = date("Y-m-d", strtotime($employeeBirthday));
             $employee->employee_status = $employeeStatus;
+            $employee->position = $employeePosition;
             $employee->date_hired = date("Y-m-d", strtotime($employeeDateHired));
             $employee->date_regularized = date("Y-m-d", strtotime($employeeDateRegularized));
             $employee->department_id = $employeeDepartment;

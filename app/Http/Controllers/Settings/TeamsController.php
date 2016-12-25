@@ -130,4 +130,13 @@ class TeamsController extends Controller
 
         return redirect('settings/teams');
     }
+
+    public function ajaxGetAddManager(Request $request)
+    {
+        $team = $request->input('team');
+        $manager = $request->input('manager');
+
+        var_dump($manager);
+        dd($team);
+    }
 }

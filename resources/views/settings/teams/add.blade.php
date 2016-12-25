@@ -5,10 +5,71 @@
 $(function () {
     $('#team_add_manager').click(function () {
         swal({
-            title: "Error!",
-            text: "Here's my error message!",
-            type: "error",
-            confirmButtonText: "Cool"
+            title: "Search Team Manager",
+            text: "Search by Last Name",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonText: "Search",
+            animation: "slide-from-top",
+            inputPlaceholder: "Search by last name (eg. Santos)",
+            showLoaderOnConfirm: true,
+            html: true
+        },
+        function(lastname){
+            if (lastname === false) {
+                return false;
+            } else if (lastname === '') {
+                swal.showInputError("You need to write something!");
+                return false;
+            } else {
+                $.ajax({
+                    type : 'get',
+                    url : '/ajax/employees/search',
+                    dataType : 'json',
+                    data : {
+                        'lastname' : lastname
+                    },
+                    success: function (data) {
+                        console.log(data);
+
+                        if (data.employee.length === 0) {
+                            swal.showInputError("We can't seem to find <strong>" + lastname + "</strong> in our employees list.");
+                            return false;
+                        }
+
+                        var teamManagerName = data.employee.first_name + " " + data.employee.last_name;
+
+                        swal({
+                            title: "Confirm Team Manager",
+                            text: "Are you sure you want to make <strong>" + teamManagerName + "</strong> as Team Manager?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            closeOnConfirm: false,
+                            closeOnCancel: true,
+                            html: true
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajax({
+                                    type : 'get',
+                                    url : '/ajax/teams/manage/manager',
+                                    dataType : 'json',
+                                    data : {
+                                        'team' : {{ $data['team']['id'] }},
+                                        'manager' : data.employee.id
+                                    }
+                                });
+                                swal("Success!", teamManagerName + " has been assigned as Manager to this team.", "success");
+                            }
+                        });
+                    }
+                })
+            }
+
         });
     });
 
@@ -20,6 +81,8 @@ $(function () {
             confirmButtonText: "Cool"
         });
     });
+
+
 });
 </script>
 

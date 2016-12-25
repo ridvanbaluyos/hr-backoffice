@@ -27,6 +27,7 @@ Route::get('/settings/teams/add', 'Settings\TeamsController@getAdd');
 Route::post('/settings/teams/add', 'Settings\TeamsController@postAdd');
 Route::get('/settings/teams/edit/{id}', 'Settings\TeamsController@getEdit');
 Route::post('/settings/teams/edit/{id}', 'Settings\TeamsController@postEdit');
+Route::get('/ajax/teams/manage/manager', 'Settings\TeamsController@ajaxGetAddManager');
 
 Route::get('/settings/departments', 'Settings\DepartmentsController@getIndex');
 Route::get('/settings/departments/add', 'Settings\DepartmentsController@getAdd');
@@ -39,3 +40,4 @@ Route::get('/settings/employees/add', 'Settings\EmployeesController@getAdd');
 Route::post('/settings/employees/add', 'Settings\EmployeesController@postAdd');
 Route::get('/settings/employees/edit/{id}', 'Settings\EmployeesController@getEdit');
 Route::post('/settings/employees/edit/{id}', 'Settings\EmployeesController@postEdit');
+Route::get('/ajax/employees/search', 'Settings\EmployeesController@ajaxGetEmployeeSearch');

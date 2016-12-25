@@ -366,4 +366,18 @@ class EmployeesController extends Controller
 
         return redirect('settings/employees');
     }
+
+    public function ajaxGetEmployeeSearch(Request $request)
+    {
+        $lastname = $request->input('lastname');
+
+        $employeeInformationModel = new EmployeeInformation();
+        $employeeInformation = $employeeInformationModel->where('last_name', $lastname)->get();
+
+        if ($employeeInformation->isEmpty()) {
+            return json_encode(['employee' => []]);
+        } else {
+            return json_encode(['employee' => $employeeInformation[0]->toArray()]);
+        }
+    }
 }

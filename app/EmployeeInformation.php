@@ -13,4 +13,9 @@ class EmployeeInformation extends Model
      */
     protected $table = 'employee_information';
     //
+
+    public function managedTeams()
+    {
+        return $this->hasMany('App\TeamManagers');
+    }
 }

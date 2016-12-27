@@ -1,12 +1,13 @@
 <?php
 namespace App\Http\Controllers\Settings;
 
+use App\EmployeeInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Team;
 use App\Department;
-
+use App\TeamManager;
 class TeamsController extends Controller
 {
     /**
@@ -88,19 +89,36 @@ class TeamsController extends Controller
      */
     public function getEdit($id)
     {
+        $data = [];
+
         $teamModel = new Team;
         $team = $teamModel->find($id);
+        $data['team'] = $team;
+
+        $teamManagersModel = new TeamManager();
+        $teamManagers = $teamManagersModel::where('team_id', $id)->get();
+        if ($teamManagers->isEmpty()) {
+            $data['teamManagers'] = [];
+        } else {
+            $data['teamManagers'] = $teamManagers;
+        }
 
         $departmentModel = new Department;
         $departments = $departmentModel::all()->keyBy('id');
-
         $data['departments'] = $departments;
-        $data['team'] = $team;
 
+        $employeeInformationModel = new EmployeeInformation();
+        $teamMembers = $employeeInformationModel->where('team_id', $id)->get()->toArray();
+        $data['teamMembers'] = $teamMembers;
 
         return view('settings.teams.add', ['data' => $data]);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function postEdit(Request $request, $id)
     {
         $name = $request->input('team_name');
@@ -136,7 +154,26 @@ class TeamsController extends Controller
         $team = $request->input('team');
         $manager = $request->input('manager');
 
-        var_dump($manager);
-        dd($team);
+        try {
+            $createdBy = Auth::user()->email;
+
+            $teamManagerModel = new TeamManager();
+            $teamManagerModel->employee_id = $manager;
+            $teamManagerModel->team_id = $team;
+            $teamManagerModel->created_by = $createdBy;
+            $teamManagerModel->save();
+
+            return json_encode(['status' => 'ok']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            switch ($e->getCode()) {
+                case '23000':
+                    return json_encode(['status' => 'duplicate']);
+                    $message = $name . ' team already exists.';
+                    break;
+                default:
+                    return json_encode(['status' => 'error']);
+                    break;
+            }
+        }
     }
 }

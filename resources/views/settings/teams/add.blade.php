@@ -1,74 +1,105 @@
 @extends('layouts.app')
 @section('content')
 <!-- Datetime Picker JS -->
+
+@if (isset($data['team']))
 <script type="text/javascript">
 $(function () {
     $('#team_add_manager').click(function () {
         swal({
             title: "Search Team Manager",
             text: "Search by Last Name",
-            type: "input",
+            input: "text",
             showCancelButton: true,
-            closeOnConfirm: false,
             confirmButtonText: "Search",
             animation: "slide-from-top",
             inputPlaceholder: "Search by last name (eg. Santos)",
             showLoaderOnConfirm: true,
-            html: true
-        },
-        function(lastname){
-            if (lastname === false) {
-                return false;
-            } else if (lastname === '') {
-                swal.showInputError("You need to write something!");
-                return false;
-            } else {
-                $.ajax({
-                    type : 'get',
-                    url : '/ajax/employees/search',
-                    dataType : 'json',
-                    data : {
-                        'lastname' : lastname
-                    },
-                    success: function (data) {
-                        console.log(data);
-
-                        if (data.employee.length === 0) {
-                            swal.showInputError("We can't seem to find <strong>" + lastname + "</strong> in our employees list.");
-                            return false;
-                        }
-
-                        var teamManagerName = data.employee.first_name + " " + data.employee.last_name;
-
-                        swal({
-                            title: "Confirm Team Manager",
-                            text: "Are you sure you want to make <strong>" + teamManagerName + "</strong> as Team Manager?",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                            closeOnConfirm: false,
-                            closeOnCancel: true,
-                            html: true
-                        },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                $.ajax({
-                                    type : 'get',
-                                    url : '/ajax/teams/manage/manager',
-                                    dataType : 'json',
-                                    data : {
-                                        'team' : {{ $data['team']['id'] }},
-                                        'manager' : data.employee.id
-                                    }
-                                });
-                                swal("Success!", teamManagerName + " has been assigned as Manager to this team.", "success");
+            allowOutsideClick: false,
+            preConfirm: function (lastname) {
+                return new Promise (function (resolve, reject) {
+                    if (lastname === false) {
+                        reject('Please enter something.');
+                    } else if (lastname === '') {
+                        reject('Please enter something.');
+                    } else {
+                        $.ajax({
+                            type: 'get',
+                            url: '/ajax/employees/search',
+                            dataType: 'json',
+                            data: {
+                                'lastname': lastname
+                            },
+                            success: function () {
+                                resolve()
                             }
-                        });
+                        })
                     }
                 })
             }
+        })
+        .then(function (lastname) {
+            // TODO: double ajax call
+            $.ajax({
+                type: 'get',
+                url: '/ajax/employees/search',
+                dataType: 'json',
+                data: {
+                    'lastname': lastname
+                },
+                success: function (data) {
+                    console.log(data);
+
+                    var teamManagerName = data.employee.first_name + " " + data.employee.last_name;
+
+                    swal({
+                        title: "Confirm Team Manager",
+                        html: "Are you sure you want to make <strong>" + teamManagerName + "</strong> as Team Manager?",
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!',
+                        showLoaderOnConfirm: true,
+                    }).then(function () {
+                        $.ajax({
+                            type : 'get',
+                            url : '/ajax/teams/manage/manager',
+                            dataType : 'json',
+                            data : {
+                                'team' : {{ $data['team']['id'] }},
+                                'manager' : data.employee.id
+                            },
+                            success : function (data) {
+                                if (data.status == 'ok') {
+                                    swal({
+                                        type: 'success',
+                                        title: 'Success!',
+                                        html: teamManagerName + " has been assigned as Manager to this team."
+                                    })
+                                    .then(function () {
+                                        // Reload page after successfully adding team manager
+                                        location.reload();
+                                    })
+
+                                } else if (data.status == 'duplicate') {
+                                    swal({
+                                        type: 'error',
+                                        title: 'Duplicate!',
+                                        html: teamManagerName + " is already a Team Manager."
+                                    })
+                                } else {
+                                    swal({
+                                        type: 'error',
+                                        title: 'Error!',
+                                        html: "Something went wrong."
+                                    })
+                                }
+                            }
+                        });
+                    });
+                }
+            });
 
         });
     });
@@ -81,10 +112,9 @@ $(function () {
             confirmButtonText: "Cool"
         });
     });
-
-
 });
 </script>
+@endif
 
 <!-- Page Heading -->
 <div class="row">
@@ -144,94 +174,69 @@ $(function () {
             @if (isset($data['team']))
                 <label for="team_managers">Managers</label>
                 <a href="#" class="btn btn-success btn-xs" id="team_add_manager">Add Manager</a>
-                <div class="table-responsive" id="team_managers">
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Department</th>
-                                <th>Action</th>
+                @if (empty($data['teamManagers']))
+                    <div class="well">
+                        No managers yet.
+                    </div>
+                @else
+                    <div class="table-responsive" id="team_managers">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($data['teamManagers'] as $teamManager)
+                            <tr class="">
+                                <td>{{ $teamManager->employeeInformation->employee_number }}</td>
+                                <td>{{ $teamManager->employeeInformation->last_name }}, {{ $teamManager->employeeInformation->first_name }}</td>
+                                <td>{{ $teamManager->employeeInformation->position }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Remove</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="">
-                            <td>1</td>
-                            <td>Frederick Stephen Bangug</td>
-                            <td>Senior Software Engineer</td>
-                            <td>Engineering</td>
-                            <td>
-                                <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Delete</a>
-                            </td>
-                        </tr>
-                        <tr class="">
-                            <td>1</td>
-                            <td>Romelo Noel Santos</td>
-                            <td>Chief Technology Officer</td>
-                            <td>Engineering</td>
-                            <td>
-                                <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Delete</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
 
                 <label for="team_members">Members</label>
-            <a href="#" class="btn btn-success btn-xs" id="team_add_member">Add Member</a>
-                <div class="table-responsive" id="team_members">
+                <a href="#" class="btn btn-success btn-xs" id="team_add_member">Add Member</a>
+                @if (empty($data['teamMembers']))
+                <div class="well">
+                    No members yet.
+                </div>
+                @else
+                    <div class="table-responsive" id="team_members">
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Position</th>
-                                <th>Department</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="">
-                                <td>1</td>
-                                <td>Frederick Stephen Bangug</td>
-                                <td>Senior Software Engineer</td>
-                                <td>Engineering</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Delete</a>
-                                </td>
-                            </tr>
-                            <tr class="">
-                                <td>2</td>
-                                <td>Ridvan Lakas ng Bayan Baluyos</td>
-                                <td>Senior Software Engineer</td>
-                                <td>Engineering</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Delete</a>
-                                </td>
-                            </tr>
-                            <tr class="">
-                                <td>3</td>
-                                <td>Kyle Alaine Domingo</td>
-                                <td>Software Engineer</td>
-                                <td>Engineering</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Delete</a>
-                                </td>
-                            </tr>
-                            <tr class="">
-                                <td>1</td>
-                                <td>Alexander Galdones</td>
-                                <td>Software Engineer</td>
-                                <td>Engineering</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Delete</a>
-
-                                </td>
-                            </tr>
+                            @foreach ($data['teamMembers'] as $teamMember)
+                                <tr class="">
+                                    <td>{{ $teamMember['employee_number'] }}</td>
+                                    <td>{{ $teamMember['last_name'] }}, {{ $teamMember['first_name'] }}</td>
+                                    <td>{{ $teamMember['position'] }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Remove</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
+                @endif
             @endif
             <button type="submit" class="btn btn-primary">@if (isset($data['team']))Update @else Add @endif Team</button>
             <a href="/settings/teams" class="btn btn-link">Cancel</a>

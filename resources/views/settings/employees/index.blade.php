@@ -46,7 +46,7 @@
                     <tbody>
                     @foreach ($data['employees'] as $employee)
                         <tr class="">
-                            <td>{{ $employee['id'] }}</td>
+                            <td>{{ $employee['employee_number'] }}</td>
                             <td><a href="/employee/{{ $employee['id'] }}">{{ $employee['last_name'] }}, {{ $employee['first_name'] }}</a></td>
                             <td>{{ $employee['position'] }}</td>
                             <td>{{ $data['teams'][$employee['team_id']]['name'] }}</td>

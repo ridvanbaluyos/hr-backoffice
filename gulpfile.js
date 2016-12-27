@@ -20,7 +20,7 @@ elixir(function(mix) {
             'bootstrap-datetimepicker.css',
             'font-awesome.min.css',
             'sb-admin.css',
-            'sweetalert.css'
+            'sweetalert2.min.css'
         ], 'public/assets/css/app.css')
 
         .scripts([
@@ -30,7 +30,7 @@ elixir(function(mix) {
             'plugins/moment/moment.min.js',
             'plugins/datetimepicker/bootstrap-datetimepicker.js',
             'plugins/chained/jquery.chained.min.js',
-            'sweetalert.min.js',
+            'sweetalert2.min.js',
         ], 'public/assets/js/app.js')
 
         .copy('resources/assets/fonts', 'public/build/assets/fonts')

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Settings;
 
+use App\TeamManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -367,6 +368,12 @@ class EmployeesController extends Controller
         return redirect('settings/employees');
     }
 
+    /**
+     * This function searches for an employee.
+     *
+     * @param Request $request
+     * @return string - json encoded string
+     */
     public function ajaxGetEmployeeSearch(Request $request)
     {
         $lastname = $request->input('lastname');
@@ -378,6 +385,28 @@ class EmployeesController extends Controller
             return json_encode(['employee' => []]);
         } else {
             return json_encode(['employee' => $employeeInformation[0]->toArray()]);
+        }
+    }
+
+    /**
+     * This function deletes an employee.
+     *
+     * @param Request $request
+     * @return string - json encoded string
+     */
+    public function ajaxDeleteEmployee(Request $request)
+    {
+        $id = $request->input('id');
+        $employeeInformation = EmployeeInformation::find($id);
+        $teamManager = TeamManager::where('employee_id', $employeeInformation->id)->first();
+
+        if (is_null($employeeInformation)) {
+            return json_encode(['status' => 'error']);
+        } elseif ($employeeInformation->delete()) {
+            $teamManager->delete();
+            return json_encode(['status' => 'ok']);
+        } else {
+            return json_encode(['status' => 'error']);
         }
     }
 }

@@ -48,7 +48,9 @@
                             <td>{{ $department->name }}</td>
                             <td>
                                 <a href="/settings/departments/edit/{{ $department->id }}"  class="btn btn-warning btn-xs"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                                <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-times" aria-hidden="true"></i> Delete</a>
+                                <a href="#" class="btn btn-danger btn-xs delete" data-url="/settings/departments" data-id="{{ $department->id }}">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Delete
+                                </a>
                             </td>
                         </tr>
                         @endforeach

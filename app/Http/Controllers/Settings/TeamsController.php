@@ -149,7 +149,7 @@ class TeamsController extends Controller
         return redirect('settings/teams');
     }
 
-    public function ajaxGetAddManager(Request $request)
+    public function ajaxPutTeamManager(Request $request)
     {
         $team = $request->input('team');
         $manager = $request->input('manager');
@@ -168,12 +168,41 @@ class TeamsController extends Controller
             switch ($e->getCode()) {
                 case '23000':
                     return json_encode(['status' => 'duplicate']);
-                    $message = $name . ' team already exists.';
                     break;
                 default:
                     return json_encode(['status' => 'error']);
                     break;
             }
+        }
+    }
+
+    public function ajaxDeleteTeamManager(Request $request)
+    {
+        $id = $request->input('id');
+        $teamManager = TeamManager::where('employee_id', $id)->first();
+
+        if (is_null($teamManager)) {
+            return json_encode(['status' => 'error']);
+        } elseif ($teamManager->delete()) {
+            return json_encode(['status' => 'ok']);
+        } else {
+            return json_encode(['status' => 'error']);
+        }
+    }
+
+    public function ajaxDeleteTeam(Request $request)
+    {
+        $id = $request->input('id');
+        $team = Team::find($id);
+        $teamManager = TeamManager::where('employee_id', $id);
+
+        if (is_null($team)) {
+            return json_encode(['status' => 'error']);
+        } elseif ($team->delete()) {
+            $teamManager->delete();
+            return json_encode(['status' => 'ok']);
+        } else {
+            return json_encode(['status' => 'error']);
         }
     }
 }

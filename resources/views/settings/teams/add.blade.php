@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('content')
-<!-- Datetime Picker JS -->
-
 @if (isset($data['team']))
 <script type="text/javascript">
 $(function () {
@@ -25,13 +23,18 @@ $(function () {
                     } else {
                         $.ajax({
                             type: 'get',
-                            url: '/ajax/employees/search',
+                            url: '/ajax/settings/employees/search',
                             dataType: 'json',
                             data: {
                                 'lastname': lastname
                             },
-                            success: function () {
-                                resolve()
+                            success: function (data) {
+                                if (data.employee.length === 0) {
+                                    reject('No records found.');
+                                } else {
+                                    resolve()
+
+                                }
                             }
                         })
                     }
@@ -42,7 +45,7 @@ $(function () {
             // TODO: double ajax call
             $.ajax({
                 type: 'get',
-                url: '/ajax/employees/search',
+                url: '/ajax/settings/employees/search',
                 dataType: 'json',
                 data: {
                     'lastname': lastname
@@ -63,8 +66,11 @@ $(function () {
                         showLoaderOnConfirm: true,
                     }).then(function () {
                         $.ajax({
-                            type : 'get',
-                            url : '/ajax/teams/manage/manager',
+                            headers : {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type : 'put',
+                            url : '/ajax/settings/teams/manager',
                             dataType : 'json',
                             data : {
                                 'team' : {{ $data['team']['id'] }},
@@ -191,14 +197,18 @@ $(function () {
                             </thead>
                             <tbody>
                             @foreach ($data['teamManagers'] as $teamManager)
-                            <tr class="">
-                                <td>{{ $teamManager->employeeInformation->employee_number }}</td>
-                                <td>{{ $teamManager->employeeInformation->last_name }}, {{ $teamManager->employeeInformation->first_name }}</td>
-                                <td>{{ $teamManager->employeeInformation->position }}</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Remove</a>
-                                </td>
-                            </tr>
+                                @if (isset($teamManager->employeeInformation))
+                                    <tr class="">
+                                        <td>{{ $teamManager->employeeInformation->employee_number }}</td>
+                                        <td>{{ $teamManager->employeeInformation->last_name }}, {{ $teamManager->employeeInformation->first_name }}</td>
+                                        <td>{{ $teamManager->employeeInformation->position }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-danger btn-xs delete" data-url="/settings/teams/manager" data-id="{{ $teamManager->employeeInformation->id }}">
+                                                <i class="fa fa-remove" aria-hidden="true"></i> Remove
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>

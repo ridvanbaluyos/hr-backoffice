@@ -52,8 +52,12 @@
                             <td>{{ $data['teams'][$employee['team_id']]['name'] }}</td>
                             <td>{{ $data['departments'][$employee['department_id']]['name'] }}</td>
                             <td>
-                                <a href="/settings/employees/edit/{{ $employee['id'] }}" class="btn btn-warning btn-xs"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                                <a href="/settings/employees/delete/{{ $employee['id'] }}" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i> Delete</a>
+                                <a href="/settings/employees/edit/{{ $employee['id'] }}" class="btn btn-warning btn-xs">
+                                    <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                                </a>
+                                <a href="#" data-url="/settings/employees" data-id="{{ $employee['id'] }}" class="btn btn-danger btn-xs delete">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Delete
+                                </a>
                             </td>
                         </tr>
                     @endforeach

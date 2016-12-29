@@ -21,21 +21,50 @@
 
 $(function () {
     $('.delete').click(function () {
+        var id = $(this).attr('data-id');
+        var url = $(this).attr('data-url');
+
         swal({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            text: "This is irreversible and will be logged.",
             type: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes'
         }).then(function () {
-            swal(
-                'Deleted!',
-                'Item has been deleted.',
-                'success'
-            )
-        })
+            $.ajax({
+                headers : {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'delete',
+                url: '/ajax' + url,
+                dataType: 'json',
+                data: {
+                    'id' : id
+                },
+                success : function (data) {
+                    if (data.status == 'ok') {
+                        swal(
+                            'Deleted!',
+                            'Entry has been successfully deleted.',
+                            'success'
+                        ).then(function () {
+                            // Reload page after successfully adding team manager
+                            location.reload();
+                        })
+                    } else {
+                        swal(
+                            'Error!',
+                            'Something went wrong',
+                            'error'
+                        );
+                    }
+                }
+            });
+        }, function (dismiss) {
+            console.log(dismiss);
+        });
     });
 
 });

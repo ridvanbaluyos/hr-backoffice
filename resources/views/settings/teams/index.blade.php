@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('content')
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+
 <!-- Page Heading -->
 <div class="row">
     <div class="col-lg-12">
@@ -50,7 +56,9 @@
                             <td>{{ $data['departments'][$team['department_id']]['name'] }}</td>
                             <td>
                                 <a href="/settings/teams/edit/{{ $team['id'] }}" class="btn btn-warning btn-xs"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
-                                <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-times" aria-hidden="true"></i> Delete</a>
+                                <a href="#" data-url="/settings/teams" data-id="{{ $team['id'] }}" class="btn btn-danger btn-xs delete">
+                                    <i class="fa fa-times" aria-hidden="true"></i> Delete
+                                </a>
                             </td>
                         </tr>
                     @endforeach

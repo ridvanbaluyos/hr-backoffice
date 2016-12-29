@@ -119,4 +119,17 @@ class DepartmentsController extends Controller
         return redirect('settings/departments');
     }
 
+    public function ajaxDeleteDepartment(Request $request)
+    {
+        $id = $request->input('id');
+        $department = Department::find($id);
+
+        if (is_null($department)) {
+            return json_encode(['status' => 'error']);
+        } elseif ($department->delete()) {
+            return json_encode(['status' => 'ok']);
+        } else {
+            return json_encode(['status' => 'error']);
+        }
+    }
 }

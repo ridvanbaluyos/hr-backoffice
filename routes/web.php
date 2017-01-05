@@ -29,6 +29,8 @@ Route::get('/settings/teams/edit/{id}', 'Settings\TeamsController@getEdit');
 Route::post('/settings/teams/edit/{id}', 'Settings\TeamsController@postEdit');
 Route::put('/ajax/settings/teams/manager', 'Settings\TeamsController@ajaxPutTeamManager');
 Route::delete('/ajax/settings/teams/manager', 'Settings\TeamsController@ajaxDeleteTeamManager');
+Route::put('/ajax/settings/teams/member', 'Settings\TeamsController@ajaxPutTeamMember');
+Route::delete('/ajax/settings/teams/member', 'Settings\TeamsController@ajaxDeleteTeamMember');
 Route::delete('/ajax/settings/teams', 'Settings\TeamsController@ajaxDeleteTeam');
 
 // Settings - Departments
@@ -51,3 +53,7 @@ Route::delete('/ajax/settings/employees', 'Settings\EmployeesController@ajaxDele
 // Settings - Leave Templates
 Route::get('/settings/leave-templates', 'Settings\LeaveTemplatesController@getIndex');
 Route::get('/settings/leave-templates/add', 'Settings\LeaveTemplatesController@getAdd');
+Route::post('/settings/leave-templates/add', 'Settings\LeaveTemplatesController@postAdd');
+Route::get('/settings/leave-templates/edit/{id}', 'Settings\LeaveTemplatesController@getEdit');
+Route::post('/settings/leave-templates/edit/{id}', 'Settings\LeaveTemplatesController@postEdit');
+Route::delete('/ajax/settings/leave-templates', 'Settings\LeaveTemplatesController@ajaxDeleteLeaveTemplate');

@@ -49,7 +49,7 @@
                             <td>{{ $employee['employee_number'] }}</td>
                             <td><a href="/employee/{{ $employee['id'] }}">{{ $employee['last_name'] }}, {{ $employee['first_name'] }}</a></td>
                             <td>{{ $employee['position'] }}</td>
-                            <td>{{ $data['teams'][$employee['team_id']]['name'] }}</td>
+                            <td>{{ (!$employee['team_id']) ? '' : $data['teams'][$employee['team_id']]['name'] }}</td>
                             <td>{{ $data['departments'][$employee['department_id']]['name'] }}</td>
                             <td>
                                 <a href="/settings/employees/edit/{{ $employee['id'] }}" class="btn btn-warning btn-xs">

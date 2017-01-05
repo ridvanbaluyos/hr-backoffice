@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Team;
 use App\Department;
 use App\TeamManager;
+use App\TeamMember;
+
 class TeamsController extends Controller
 {
     /**
@@ -187,6 +189,61 @@ class TeamsController extends Controller
             return json_encode(['status' => 'ok']);
         } else {
             return json_encode(['status' => 'error']);
+        }
+    }
+
+    public function ajaxPutTeamMember(Request $request)
+    {
+        $team = $request->input('team');
+        $member = $request->input('member');
+
+        try {
+            $createdBy = Auth::user()->email;
+
+            // Employee Information
+            $employeeInformationModel = new EmployeeInformation();
+            $employee = $employeeInformationModel->find($member);
+
+            $employee->team_id = $team;
+            $employee->save();
+
+            return json_encode(['status' => 'ok']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            switch ($e->getCode()) {
+                case '23000':
+                    return json_encode(['status' => 'duplicate']);
+                    break;
+                default:
+                    return json_encode(['status' => 'error']);
+                    break;
+            }
+        }
+    }
+
+    public function ajaxDeleteTeamMember(Request $request)
+    {
+        $member = $request->input('id');
+
+        try {
+            $createdBy = Auth::user()->email;
+
+            // Employee Information
+            $employeeInformationModel = new EmployeeInformation();
+            $employee = $employeeInformationModel->find($member);
+            $employee->team_id = 0;
+
+            $employee->save();
+
+            return json_encode(['status' => 'ok']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            switch ($e->getCode()) {
+                case '23000':
+                    return json_encode(['status' => 'duplicate']);
+                    break;
+                default:
+                    return json_encode(['status' => 'error']);
+                    break;
+            }
         }
     }
 

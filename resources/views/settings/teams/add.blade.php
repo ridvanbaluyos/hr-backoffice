@@ -112,11 +112,109 @@ $(function () {
 
     $('#team_add_member').click(function () {
         swal({
-            title: "Error!",
-            text: "Here's my error message!",
-            type: "error",
-            confirmButtonText: "Cool"
-        });
+            title: "Search Team Member",
+            text: "Search by Last Name",
+            input: "text",
+            showCancelButton: true,
+            confirmButtonText: "Search",
+            animation: "slide-from-top",
+            inputPlaceholder: "Search by last name (eg. Santos)",
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            preConfirm: function (lastname) {
+                return new Promise (function (resolve, reject) {
+                    if (lastname === false) {
+                        reject('Please enter something.');
+                    } else if (lastname === '') {
+                        reject('Please enter something.');
+                    } else {
+                        $.ajax({
+                            type: 'get',
+                            url: '/ajax/settings/employees/search',
+                            dataType: 'json',
+                            data: {
+                                'lastname': lastname
+                            },
+                            success: function (data) {
+                                if (data.employee.length === 0) {
+                                    reject('No records found.');
+                                } else {
+                                    resolve()
+
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        .then(function (lastname) {
+                    // TODO: double ajax call
+                    $.ajax({
+                        type: 'get',
+                        url: '/ajax/settings/employees/search',
+                        dataType: 'json',
+                        data: {
+                            'lastname': lastname
+                        },
+                        success: function (data) {
+                            console.log(data);
+
+                            var teamManagerName = data.employee.first_name + " " + data.employee.last_name;
+
+                            swal({
+                                title: "Confirm Team Member",
+                                html: "Are you sure you want to make <strong>" + teamManagerName + "</strong> as Team Member?",
+                                type: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes!',
+                                showLoaderOnConfirm: true,
+                            }).then(function () {
+                                $.ajax({
+                                    headers : {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                    type : 'put',
+                                    url : '/ajax/settings/teams/member',
+                                    dataType : 'json',
+                                    data : {
+                                        'team' : {{ $data['team']['id'] }},
+                                        'member' : data.employee.id
+                                    },
+                                    success : function (data) {
+                                        if (data.status == 'ok') {
+                                            swal({
+                                                type: 'success',
+                                                title: 'Success!',
+                                                html: teamManagerName + " has been assigned as Member to this team."
+                                            })
+                                                    .then(function () {
+                                                        // Reload page after successfully adding team manager
+                                                        location.reload();
+                                                    })
+
+                                        } else if (data.status == 'duplicate') {
+                                            swal({
+                                                type: 'error',
+                                                title: 'Duplicate!',
+                                                html: teamManagerName + " is already a Team Member."
+                                            })
+                                        } else {
+                                            swal({
+                                                type: 'error',
+                                                title: 'Error!',
+                                                html: "Something went wrong."
+                                            })
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    });
+
+                });
     });
 });
 </script>
@@ -199,7 +297,11 @@ $(function () {
                             @foreach ($data['teamManagers'] as $teamManager)
                                 @if (isset($teamManager->employeeInformation))
                                     <tr class="">
-                                        <td>{{ $teamManager->employeeInformation->employee_number }}</td>
+                                        <td>
+                                            <a href="/settings/employees/edit/{{ $teamManager->id }}">
+                                                {{ $teamManager->employeeInformation->employee_number }}
+                                            </a>
+                                        </td>
                                         <td>{{ $teamManager->employeeInformation->last_name }}, {{ $teamManager->employeeInformation->first_name }}</td>
                                         <td>{{ $teamManager->employeeInformation->position }}</td>
                                         <td>
@@ -235,11 +337,15 @@ $(function () {
                         <tbody>
                             @foreach ($data['teamMembers'] as $teamMember)
                                 <tr class="">
-                                    <td>{{ $teamMember['employee_number'] }}</td>
+                                    <td>
+                                        <a href="/settings/employees/edit/{{ $teamMember['id'] }}">
+                                            {{ $teamMember['employee_number'] }}
+                                        <a/>
+                                    </td>
                                     <td>{{ $teamMember['last_name'] }}, {{ $teamMember['first_name'] }}</td>
                                     <td>{{ $teamMember['position'] }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-remove" aria-hidden="true"></i> Remove</a>
+                                        <a href="#" class="btn btn-danger btn-xs delete" data-url="/settings/teams/member" data-id="{{ $teamMember['id'] }}"><i class="fa fa-remove" aria-hidden="true"></i> Remove</a>
                                     </td>
                                 </tr>
                             @endforeach

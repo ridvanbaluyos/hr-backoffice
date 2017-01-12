@@ -71,4 +71,17 @@ return [
         '10' => '10%',
         '15' => '15%',
     ],
+
+    // Gift Certificates
+    'gift_certificates' => [
+        'none' => 'None, I prefer not to receive any GC for this month',
+        'sm' => 'SM Gift Pass',
+        'eplus' => 'Eplus Load',
+        'mercury' => 'Mercury Drug GC',
+        'bioessence' => 'Bioessence',
+        'ek' => 'Enchanted Kingdom Wizard Money',
+        'rustans' => 'Rustans GC',
+        'waltermart' => 'Waltermart GC',
+        'shopwise' => 'Shopwise GC',
+    ],
 ];

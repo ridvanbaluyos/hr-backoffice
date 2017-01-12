@@ -4,6 +4,21 @@
         <li @if (Request::is('home/*')) class="active"@endif>
             <a href="/home"><i class="fa fa-fw fa-home"></i> Home</a>
         </li>
+        <li @if (Request::is('perks/*')) class="active"@endif>
+            <a href="javascript:;" data-toggle="collapse" data-target="#perks" class="collapsed" aria-expanded="false"><i class="fa fa-gift" aria-hidden="true"></i> Perks <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="perks" @if (Request::is('perks/*')) class="collapse in" aria-expanded="true"@else class="collapse" aria-expanded="false"@endif>
+                <li>
+                    <a href="/perks/gift-certificates"> Gift Certificate</a>
+                </li>
+                <li>
+                    <a href="/perks/gift-certificates/distribution"> GC Distribution</a>
+                </li>
+                <li>
+                    <a href="/perks/foodstubs"> Food Stub</a>
+                </li>
+            </ul>
+        </li>
+        <!--
         <li @if (Request::is('teams/*')) class="active"@endif>
             <a href="/teams/status/1"><i class="fa fa-fw fa-users"></i> Team Status</a>
         </li>
@@ -68,6 +83,7 @@
                 </li>
             </ul>
         </li>
+        -->
     </ul>
 </div>
 @endif

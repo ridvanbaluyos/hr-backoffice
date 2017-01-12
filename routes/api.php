@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::get('/360/perks/gift-certificates', 'Perks\GiftCertificatesController@apiGetPerksGiftCertificates');
+Route::get('/360/perks/gift-certificates/{id}', 'Perks\GiftCertificatesController@apiGetUserPerksGiftCertificates')->where('id', '[0-9]+');
+Route::post('/360/perks/gift-certificates/{id}', 'Perks\GiftCertificatesController@apiPostPerksGiftCertificates')->where('id', '[0-9]+');

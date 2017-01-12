@@ -77,29 +77,39 @@ $(function () {
                                 'manager' : data.employee.id
                             },
                             success : function (data) {
-                                if (data.status == 'ok') {
-                                    swal({
-                                        type: 'success',
-                                        title: 'Success!',
-                                        html: teamManagerName + " has been assigned as Manager to this team."
-                                    })
-                                    .then(function () {
-                                        // Reload page after successfully adding team manager
-                                        location.reload();
-                                    })
-
-                                } else if (data.status == 'duplicate') {
-                                    swal({
-                                        type: 'error',
-                                        title: 'Duplicate!',
-                                        html: teamManagerName + " is already a Team Manager."
-                                    })
-                                } else {
-                                    swal({
-                                        type: 'error',
-                                        title: 'Error!',
-                                        html: "Something went wrong."
-                                    })
+                                switch (data.status) {
+                                    case 'ok':
+                                        swal({
+                                            type: 'success',
+                                            title: 'Success!',
+                                            html: teamManagerName + " has been assigned as Manager to this team."
+                                        })
+                                        .then(function () {
+                                            // Reload page after successfully adding team manager
+                                            location.reload();
+                                        });
+                                        break;
+                                    case 'duplicate':
+                                        swal({
+                                            type: 'error',
+                                            title: 'Duplicate!',
+                                            html: teamManagerName + " is already a Team Manager."
+                                        });
+                                        break;
+                                    case 'existing':
+                                        swal({
+                                            type: 'error',
+                                            title: 'Existing!',
+                                            html: teamManagerName + " is already Team Member."
+                                        });
+                                        break;
+                                    default:
+                                        swal({
+                                            type: 'error',
+                                            title: 'Error!',
+                                            html: "Something went wrong."
+                                        });
+                                        break;
                                 }
                             }
                         });
@@ -170,7 +180,7 @@ $(function () {
                                 confirmButtonColor: '#3085d6',
                                 cancelButtonColor: '#d33',
                                 confirmButtonText: 'Yes!',
-                                showLoaderOnConfirm: true,
+                                showLoaderOnConfirm: true
                             }).then(function () {
                                 $.ajax({
                                     headers : {
@@ -184,29 +194,39 @@ $(function () {
                                         'member' : data.employee.id
                                     },
                                     success : function (data) {
-                                        if (data.status == 'ok') {
-                                            swal({
-                                                type: 'success',
-                                                title: 'Success!',
-                                                html: teamManagerName + " has been assigned as Member to this team."
-                                            })
-                                                    .then(function () {
-                                                        // Reload page after successfully adding team manager
-                                                        location.reload();
-                                                    })
-
-                                        } else if (data.status == 'duplicate') {
-                                            swal({
-                                                type: 'error',
-                                                title: 'Duplicate!',
-                                                html: teamManagerName + " is already a Team Member."
-                                            })
-                                        } else {
-                                            swal({
-                                                type: 'error',
-                                                title: 'Error!',
-                                                html: "Something went wrong."
-                                            })
+                                        switch (data.status) {
+                                            case 'ok':
+                                                swal({
+                                                    type: 'success',
+                                                    title: 'Success!',
+                                                    html: teamManagerName + " has been assigned as Member to this team."
+                                                })
+                                                .then(function () {
+                                                    // Reload page after successfully adding team manager
+                                                    location.reload();
+                                                });
+                                                break;
+                                            case 'duplicate':
+                                                swal({
+                                                    type: 'error',
+                                                    title: 'Duplicate!',
+                                                    html: teamManagerName + " is already a Team Member."
+                                                });
+                                                break;
+                                            case 'existing':
+                                                swal({
+                                                    type: 'error',
+                                                    title: 'Error!',
+                                                    html: teamManagerName + " is a Team Manager."
+                                                });
+                                                break;
+                                            default:
+                                                swal({
+                                                    type: 'error',
+                                                    title: 'Error!',
+                                                    html: "Something went wrong."
+                                                });
+                                                break;
                                         }
                                     }
                                 });

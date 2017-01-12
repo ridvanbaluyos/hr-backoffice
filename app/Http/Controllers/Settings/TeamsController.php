@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Settings;
 use App\EmployeeInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Team;
 use App\Department;
 use App\TeamManager;
-use App\TeamMember;
 
 class TeamsController extends Controller
 {
@@ -159,13 +159,19 @@ class TeamsController extends Controller
         try {
             $createdBy = Auth::user()->email;
 
-            $teamManagerModel = new TeamManager();
-            $teamManagerModel->employee_id = $manager;
-            $teamManagerModel->team_id = $team;
-            $teamManagerModel->created_by = $createdBy;
-            $teamManagerModel->save();
+            $isTeamMember = DB::table('employee_information')->where('id', '=', $manager)->where('team_id', '=', $team)->get();
 
-            return json_encode(['status' => 'ok']);
+            if ($isTeamMember->isEmpty()) {
+                $teamManagerModel = new TeamManager();
+                $teamManagerModel->employee_id = $manager;
+                $teamManagerModel->team_id = $team;
+                $teamManagerModel->created_by = $createdBy;
+                $teamManagerModel->save();
+
+                return json_encode(['status' => 'ok']);
+            } else {
+                return json_encode(['status' => 'existing']);
+            }
         } catch (\Illuminate\Database\QueryException $e) {
             switch ($e->getCode()) {
                 case '23000':
@@ -204,10 +210,16 @@ class TeamsController extends Controller
             $employeeInformationModel = new EmployeeInformation();
             $employee = $employeeInformationModel->find($member);
 
-            $employee->team_id = $team;
-            $employee->save();
+            $isTeamManager = DB::table('team_managers')->where('employee_id', '=', $member)->where('team_id', '=', $team)->get();
 
-            return json_encode(['status' => 'ok']);
+            if ($isTeamManager->isEmpty()) {
+                $employee->team_id = $team;
+                $employee->save();
+
+                return json_encode(['status' => 'ok']);
+            } else {
+                return json_encode(['status' => 'existing']);
+            }
         } catch (\Illuminate\Database\QueryException $e) {
             switch ($e->getCode()) {
                 case '23000':

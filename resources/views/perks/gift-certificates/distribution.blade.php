@@ -82,18 +82,18 @@ $(function () {
                         <option value="{{ $perk }}" @if(Session::get('perk') == $perk) selected="selected" @endif>{{ $gift_certificate }}</option>
                     @endforeach
                 </select>
-                <select name="department" id="department" class="form-control">
-                    <option value="all">All</option>
-                    @foreach ($data['departments'] as $department)
-                        <option value="{{ $department['id'] }}" @if(Session::get('department') == $department) selected="selected" @endif >{{ $department['name'] }}</option>
-                    @endforeach
-                </select>
-                <select name="team" id="team" class="form-control">
-                    <option value="all">All</option>
-                    @foreach ($data['teams'] as $team)
-                        <option value="{{ $team['id'] }}" class="{{ $team['department_id'] }}">{{ $team['name'] }}</option>
-                    @endforeach
-                </select>
+                {{--<select name="department" id="department" class="form-control">--}}
+                    {{--<option value="all">All</option>--}}
+                    {{--@foreach ($data['departments'] as $department)--}}
+                        {{--<option value="{{ $department['id'] }}" @if(Session::get('department') == $department) selected="selected" @endif >{{ $department['name'] }}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+                {{--<select name="team" id="team" class="form-control">--}}
+                    {{--<option value="all">All</option>--}}
+                    {{--@foreach ($data['teams'] as $team)--}}
+                        {{--<option value="{{ $team['id'] }}" class="{{ $team['department_id'] }}">{{ $team['name'] }}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
                 {{ Form::text('lastname', null, ['class' => 'form-control', 'placeholder' => 'Search by Last Name']) }}
                 <input type="submit" class="btn btn-info" value="Filter" />
             </div>

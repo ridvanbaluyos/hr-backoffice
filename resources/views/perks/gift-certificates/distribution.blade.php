@@ -72,7 +72,7 @@ $(function () {
 @include('layouts.flash-message')
 <div class="row">
     <div class="col-lg-12">
-        {{ Form::open(['url' => '/perks/gift-certificates/distribution', 'method' => 'post', 'class' => 'navbar-form navbar-left']) }}
+        <form method="POST" action="//perks/gift-certificates/distribution" accept-charset="UTF-8" class="navbar-form navbar-left">
             <div class="form-group">
                 {{ Form::label('', 'Filters') }}:
                 {{ Form::select('month', $data['months'], (Session::has('month')) ? Session::get('month') : date('m'), ['class' => 'form-control', 'placeholder' => '[Select Month]']) }}

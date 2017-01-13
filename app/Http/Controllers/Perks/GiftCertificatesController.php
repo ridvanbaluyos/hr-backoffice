@@ -43,6 +43,14 @@ class GiftCertificatesController extends Controller
         $year = date('Y');
         $createdBy = Auth::user()->email;
 
+        if (is_null($giftCertificates)) {
+            $message = 'Something went wrong.';
+            $request->session()->flash('alert-class', 'danger');
+            $request->session()->flash('alert-message', $message);
+
+            return redirect('perks/gift-certificates');
+        }
+
         try {
             foreach ($giftCertificates as $month=>$perk) {
                 $monthYear = Carbon::createFromDate($year, $month, 1, 'Asia/Manila')->format('Y-m-d');

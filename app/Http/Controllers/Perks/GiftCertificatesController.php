@@ -272,6 +272,45 @@ class GiftCertificatesController extends Controller
         }
     }
 
+    public function ajaxGetGiftCertificateReport(Request $request)
+    {
+        $type = $request->input('type');
+
+        $monthlyReport = DB::table('perks_gift_certificates')->select(DB::raw('month_year as month, perk, COUNT(id) AS count'))->groupBy('month_year')->groupBy('perk')->get()->toArray();
+
+        $formattedReport = [];
+        $perks = [];
+        foreach ($monthlyReport as $report) {
+            if (isset($perks[$report->month])) {
+                $perks[$report->month]['date'] = $report->month;
+                $perks[$report->month][$report->perk] = $report->count;
+            } else {
+                $perks[$report->month] = [];
+            }
+        }
+
+        foreach ($perks as $perk) {
+            array_push($formattedReport, $perk);
+        }
+
+        return json_encode($formattedReport);
+        /**
+         *
+         * {
+            date: '2017-01',
+            sm: 2666,
+            eplus: null,
+            mercury: 2647
+        }, {
+        date: '2017-02',
+        sm: 2778,
+        eplus: 2294,
+        mercury: 2441
+        }, {
+         *
+         */
+    }
+
     /**
      * @return array
      *

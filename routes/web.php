@@ -29,6 +29,8 @@ Route::post('/perks/gift-certificates/{id}', 'Perks\GiftCertificatesController@p
 Route::get('/perks/gift-certificates/distribution', 'Perks\GiftCertificatesController@getDistribution');
 Route::post('/perks/gift-certificates/distribution', 'Perks\GiftCertificatesController@postDistribution');
 Route::put('/ajax/perks/gift-certificates/redeem', 'Perks\GiftCertificatesController@putRedeemGiftCertificate');
+Route::get('/ajax/perks/gift-certificates/reports', 'Perks\GiftCertificatesController@ajaxGetGiftCertificateReport');
+
 
 // Perks - Food Stubs
 Route::get('/perks/foodstubs', 'Perks\FoodStubsController@getIndex');

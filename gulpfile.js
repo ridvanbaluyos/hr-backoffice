@@ -20,7 +20,8 @@ elixir(function(mix) {
             'bootstrap-datetimepicker.css',
             'font-awesome.min.css',
             'sb-admin.css',
-            'sweetalert2.min.css'
+            'sweetalert2.min.css',
+            'morris.css',
         ], 'public/assets/css/app.css')
 
         .scripts([
@@ -31,6 +32,8 @@ elixir(function(mix) {
             'plugins/datetimepicker/bootstrap-datetimepicker.js',
             'plugins/chained/jquery.chained.min.js',
             'sweetalert2.min.js',
+            'plugins/morris/raphael.min.js',
+            'plugins/morris/morris.min.js'
         ], 'public/assets/js/app.js')
 
         .copy('resources/assets/fonts', 'public/build/assets/fonts')

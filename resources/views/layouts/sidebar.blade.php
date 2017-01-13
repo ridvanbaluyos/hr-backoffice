@@ -18,7 +18,6 @@
                 </li>
             </ul>
         </li>
-        <!--
         <li @if (Request::is('teams/*')) class="active"@endif>
             <a href="/teams/status/1"><i class="fa fa-fw fa-users"></i> Team Status</a>
         </li>
@@ -83,7 +82,6 @@
                 </li>
             </ul>
         </li>
-        -->
     </ul>
 </div>
 @endif
